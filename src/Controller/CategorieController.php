@@ -15,7 +15,7 @@ class CategorieController extends AbstractController
     {
         $categories = $categorieRepository->findBy([],["nom" => "ASC"]);
         return $this->render('categorie/index.html.twig', [
-            'categories' => 'categories',
+            'categories' => $categories,
         ]);
     }
 

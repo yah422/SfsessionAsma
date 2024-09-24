@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste sessions {% endblock %}
+
+{% block body %}
+
+<div class="">
+    <h1> Liste des sessions pour {{ categorie.nom }} </h1>
+
+    {% for session in categorie.session %}
+        <ul>
+            <li>
+                <a href="{{ path('show_session',{'id':session.id })}}"> {{ session.nom }} </a>
+            </li>
+        </ul>
+    {% endfor %}
+    
+</div>
+{% endblock %}
