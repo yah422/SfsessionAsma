@@ -15,24 +15,25 @@ Cette application permet de gérer les sessions de formation pour les administra
    - Conception de la base de données pour représenter les entités de l'application (sessions, modules, catégories, stagiaires, etc.).
    - Créez les schémas nécessaires pour illustrer les relations entre les entités.
 
-![image](https://github.com/user-attachments/assets/99ac6670-3a46-4001-862b-87f28edffd0d)
+![image](https://github.com/user-attachments/assets/0dcbc7e0-9c2d-4519-b167-efb5cccb416e)
 
-![image](https://github.com/user-attachments/assets/486c1d75-869a-4181-bb0a-34a7fe001a9f)
+![image](https://github.com/user-attachments/assets/b64b4c2a-3c5a-4c50-be6b-5c4dc5f2c90d)
 
 
 2. **Maquettage (Wireframe ou Mock-up)**
    - Réalisez un wireframe ou un mock-up de l'application en veillant à l'UX/UI.
    - Utilisez des outils tels que Figma.
 
-![image](https://github.com/user-attachments/assets/39f9db82-de58-4fc4-9390-3fe9d4df5be1)
-![image](https://github.com/user-attachments/assets/fc60fb48-5561-4402-b136-016901607a5a)
-![image](https://github.com/user-attachments/assets/8b6dd2e3-00f9-420d-9d09-7ef023b6fb26)
+![image](https://github.com/user-attachments/assets/ad6c1570-047d-401f-9934-89f94e693d2b)
+![image](https://github.com/user-attachments/assets/657c959c-56e2-4cb8-b1b4-e373014498f9)
+![image](https://github.com/user-attachments/assets/a4a287b0-e54a-4140-9f84-3d75a19354bb)
+
 
 3. **Gestion de Projet avec Trello (Méthode MoSCoW)**
    - Créez un tableau Trello pour gérer le projet en utilisant la méthode MoSCoW (Must have, Should have, Could have, Would have).
    - Identifiez et catégorisez les fonctionnalités prioritaires.
 
-![image](https://github.com/user-attachments/assets/056ba229-b8d9-4dd4-a863-0df56e5576f6)
+![image](https://github.com/user-attachments/assets/87a706d1-ffa4-4884-a24f-67fd2e5f73ee)
 
 4. **Développement de l'Application (Pattern MVC)**
    - Suivez le design pattern MVC (Modèle-Vue-Contrôleur) pour le développement de l'application.
