@@ -23,6 +23,7 @@ INSERT INTO `categorie` (`id`, `nom`) VALUES
 	(5, 'Comptabilité');
 
 -- Listage des données de la table sfsessionasma.doctrine_migration_versions : ~0 rows (environ)
+
 -- Listage des données de la table sfsessionasma.formateur : ~3 rows (environ)
 INSERT INTO `formateur` (`id`, `email`, `nom`, `prenom`) VALUES
 	(1, 'mickael@gmail.com', 'murmann', 'mickael'),
@@ -47,9 +48,13 @@ INSERT INTO `module` (`id`, `nom`, `categorie_id`) VALUES
 
 -- Listage des données de la table sfsessionasma.programme_session : ~0 rows (environ)
 
--- Listage des données de la table sfsessionasma.session : ~1 rows (environ)
+-- Listage des données de la table sfsessionasma.session : ~5 rows (environ)
 INSERT INTO `session` (`id`, `formateur_id`, `nom`, `nbre_place`, `date_debut`, `date_fin`, `categorie_id`) VALUES
-	(1, 3, 'Initiation au design', 11, '2024-09-24 21:49:53', '2024-09-29 21:49:55', 3);
+	(1, 3, 'Initiation au design', 11, '2024-09-24 21:49:53', '2024-09-29 21:49:55', 3),
+	(2, 1, 'Initiation PHP', 10, '2024-09-18 22:30:45', '2024-09-24 22:30:53', 1),
+	(3, 2, 'Initiation vente', 5, '2024-09-24 22:31:21', '2024-09-30 22:31:23', 4),
+	(4, 1, 'Initiation Comptabilité', 7, '2024-09-12 22:34:08', '2024-09-20 22:34:16', 5),
+	(5, 3, 'Initiation Word', 15, '2024-09-22 22:35:06', '2024-10-24 22:35:13', 2);
 
 -- Listage des données de la table sfsessionasma.session_stagiaire : ~0 rows (environ)
 
