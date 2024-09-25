@@ -12,7 +12,8 @@ class StagiaireController extends AbstractController
     public function index(): Response
     {
         return $this->render('stagiaire/index.html.twig', [
-            'nom' => $nom ,
+            'nom' => "nom" ,
+            'prenom' => "prenom",
         ]);
     }
 }
