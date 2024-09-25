@@ -8,8 +8,8 @@
         <h1>Liste des Sessions</h1>
         
             {% for session in sessions %}
-                <ul>   
-                    <li> <a href="{{ path('show_session',{'id':session.id })}}"> {{ session.nom }} </a>  </li>
+                <ul class="list-group list-group-flush">   
+                    <li class="list-group-item"> <a href="{{ path('show_session',{'id':session.id })}}"> {{ session.nom }} </a>  </li>
                 </ul>             
             {% endfor %}
         
