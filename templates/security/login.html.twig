@@ -14,7 +14,7 @@
         {% if app.user %}
             <div class="mb-3 alert alert-info">
                 Vous êtes connecté en tant que {{ app.user.userIdentifier }},
-                <a href="{{ path('app_logout') }}" class="alert-link">Logout</a>
+                <a href="{{ path('app_logout') }}" class="alert-link"> Se déconnecter </a>
             </div>
         {% endif %}
  
