@@ -12,12 +12,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class SessionController extends AbstractController
 {
     #[Route('/session', name: 'app_session')]
-    public function index(Categorie $categorie,SessionRepository $sessionRepository): Response
+    public function index(SessionRepository $sessionRepository): Response
     {
-        $sessions = $sessionRepository->findBy(['categorie' => $categorie],["nom" => "ASC"]);
+        $sessions = $sessionRepository->findBy(["nom" => "ASC"]);
         return $this->render('session/index.html.twig', [
             'sessions' => $sessions,
-            'categorie' => $categorie
+            
         ]);
     }
 
