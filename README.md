@@ -66,7 +66,7 @@ Cette application permet de gérer les sessions de formation pour les administra
 
 4. Créez les tables à partir de votre MCD/MLD :
    ```bash
-   php bin/console doctrine:schema:update --force
+   console doctrine:schema:update --force
    ```
 
 5. Démarrez le serveur :
