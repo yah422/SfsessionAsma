@@ -4,14 +4,14 @@
 
 {% block body %}
 
-<div class="">
-    <h1>Détails de la session {{ session.nom }}</h1>
+<div class="content" style="margin: 50px;">
+    <h1>Détails de la session {{ session.nom }}</h1><br>
 
     <p>
-        Intitulé: {{ session.nom }} <br>
-        Date de début: {{ session.dateDebut|date('d/m/Y') }} <br>
-        Date de fin: {{ session.dateFin|date('d/m/Y') }} <br>
-        Nombre de places: {{ session.nbrePlace }} <br>
+        <strong>Intitulé:</strong> {{ session.nom }} <br>
+        <strong>Date de début:</strong> {{ session.dateDebut|date('d/m/Y') }} <br>
+        <strong>Date de fin:</strong> {{ session.dateFin|date('d/m/Y') }} <br>
+        <strong>Nombre de places: </strong>{{ session.nbrePlace }} <br>
     </p>
 </div>
 

@@ -4,12 +4,12 @@
 
 {% block body %}
 
-<div class="">
+<div class="content" style="margin: 50px;">
     <h1> Liste des sessions pour {{ categorie.nom }} </h1>
 
     {% for session in categorie.session %}
-        <ul>
-            <li>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
                 <a href="{{ path('show_session',{'id':session.id })}}"> {{ session.nom }} </a>
             </li>
         </ul>
