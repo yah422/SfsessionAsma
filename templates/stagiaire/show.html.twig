@@ -4,18 +4,19 @@
 
 {% block body %}
 
-<div class="content">
+<div class="content mt-12">
 
-    <div id="ficheStagiaire">
-        <h1>Détails du stagiaire {{ stagiaire.prenom }}</h1><br>
+    <div id="ficheStagiaire" class="mb-6">
+        <h1 class="text-2xl font-bold">Détails du stagiaire {{ stagiaire.prenom }}</h1>
     </div>
-    <div id="DetailsStagiaire">
-        <p>
+    
+    <div id="DetailsStagiaire" class="bg-white shadow-md rounded p-6">
+        <p class="text-gray-700">
             <strong>Nom:</strong> {{ stagiaire.nom }} <br>
             <strong>Prénom:</strong> {{ stagiaire.prenom }} <br>
             <strong>Date de naissance:</strong> {{ stagiaire.dateNaissance|date('d/m/Y') }} <br>
             <strong>Email:</strong> {{ stagiaire.email }} <br>
-            <strong>Téléphone: </strong>{{ stagiaire.tel }} <br>
+            <strong>Téléphone:</strong> {{ stagiaire.tel }} <br>
         </p>
     </div>
 </div>
