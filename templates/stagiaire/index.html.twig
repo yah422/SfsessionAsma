@@ -6,8 +6,10 @@
 
 <div class="content">
 
-    <h1>Liste des stagiaires</h1>
-
+    <div id="ficheStagiaire">
+        <h1>Liste des stagiaires</h1>
+    </div>
+    
     {% for stagiaire in stagiaires %}
         <ul class="list-group list-group-flush">
             <li class="list-group-item"> <a href="{{ path('show_stagiaire',{'id':stagiaire.id })}}"> {{ stagiaire.nom}} {{stagiaire.prenom }} </a></li>

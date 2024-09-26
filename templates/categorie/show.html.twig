@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Liste sessions {% endblock %}
+{% block title %} Liste sessions ! {% endblock %}
 
 {% block body %}
 
 <div class="content" style="margin: 50px;">
-    <h1> Liste des sessions pour {{ categorie.nom }} </h1>
 
+    <div id="ficheStagiaire">
+        <h1> Liste des sessions pour {{ categorie.nom }} </h1>
+    </div>
+    
     {% for session in categorie.session %}
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -16,4 +19,5 @@
     {% endfor %}
     
 </div>
+
 {% endblock %}
