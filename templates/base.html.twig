@@ -10,7 +10,6 @@
         {% endblock %}
     </head>
     <body>
-        
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
               <a class="navbar-brand" href="{{ path('home') }}"> Home </a>
@@ -18,27 +17,49 @@
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav me-auto">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_categorie') }}"> Catégories </a>
+                    <a class="nav-link" href="{{ path('app_categorie') }}">Catégories</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_session') }}"> Sessions </a>
+                    <a class="nav-link" href="{{ path('app_session') }}">Sessions</a>
                   </li>
-                  <li>
-                    <a class="nav-link" href="{{ path('app_stagiaire') }}"> Stagiaires </a>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_stagiaire') }}">Liste des Stagiaires</a>
                   </li>
-                  <li>
-                    <a class="nav-link" href="{{ path('app_login') }}"> Se connecter </a>
-                  </li>
-                  <li>
-                    <a class="nav-link" href="{{ path('app_register') }}"> S'inscrire </a>
-                  </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                  {% if app.user %}
+                      {% if is_granted('ROLE_ADMIN') %}
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{ path('app_stagiaire') }}">Liste des Stagiaires</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{ path('app_stagiaire_delete') }}">Supprimer Stagiaires</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{ path('app_session_delete') }}">Supprimer Sessions</a>
+                          </li>
+                      {% endif %}
+                      <li class="nav-item">
+                          <a class="nav-link disabled">Bienvenue, {{ app.user.email }}</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
+                      </li>
+                  {% else %}
+                      <li class="nav-item">
+                          <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="{{ path('app_register') }}">S'inscrire</a>
+                      </li>
+                  {% endif %}
                 </ul>
               </div>
             </div>
-          </nav>
-          
+        </nav>
+
         {% block body %}
         {% endblock %}
         
