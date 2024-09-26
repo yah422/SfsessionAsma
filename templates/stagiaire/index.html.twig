@@ -5,6 +5,18 @@
 {% block body %}
 
 <div class="content">
+
+    <div id="ficheStagiaire">
+        <p> Fiche stagiaire  </p>
+    </div>
+
+    <h1>Liste des stagiaires</h1>
+
+    {% for stagiaire in stagiaires %}
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"> <a href="{{ path('show_stagiaire',{'id':stagiaire.id })}}"> {{ stagiaire.nom}} {{stagiaire.prenom }} </a></li>
+        </ul>
+    {% endfor %}
  
 </div>
 {% endblock %}

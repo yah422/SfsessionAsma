@@ -15,3 +15,11 @@ body {
     align-items: flex-start;
    
 }
+
+#ficheStagiaire {
+    margin: 50px;
+    width: 100%;
+    height: 100px;
+    background-color: #346E74;
+    color: #ffffff;
+}
