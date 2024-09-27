@@ -3,24 +3,23 @@
 {% block title %} Liste catégorie {% endblock %}
 
 {% block body %}
-
-<div class="content p-6 max-w-4xl mx-auto bg-white shadow-md rounded">
+<div class="content mt-12">
 
     <div id="ficheStagiaire" class="flex items-center mb-6">
-        <img id="icons" class="w-8 h-8 mr-2" src="{{ asset('img/options-lines (1).png') }}" alt="Graduation Hat">
-        <h1 class="text-2xl font-bold"> Liste des catégories </h1>
+        <img id="icons" src="{{ asset('img/options-lines (1).png') }}" alt="Graduation Hat" class="h-8 w-8"> 
+        <h1 class="text-2xl font-bold ml-4">Liste des catégories</h1>
     </div>
-    <br>
-    
+
     {% for categorie in categories %}
-        <ul class="list-none">
-            <li class="border-b border-gray-200 p-2 hover:bg-gray-100 transition duration-300">
-                <a href="{{ path('show_categorie',{'id': categorie.id })}}" class="text-indigo-600 hover:underline"> 
+        <ul class="divide-y divide-gray-200 border rounded-lg">   
+            <li class="px-4 py-2 hover:bg-gray-100"> 
+                <a href="{{ path('show_categorie',{'id': categorie.id })}}" class="text-blue-600 hover:underline"> 
                     {{ categorie.nom }} 
                 </a>
             </li>
-        </ul>
+        </ul>             
     {% endfor %}
     
 </div>
 {% endblock %}
+
