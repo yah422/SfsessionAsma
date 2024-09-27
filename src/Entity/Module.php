@@ -28,9 +28,16 @@ class Module
     #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'module')]
     private Collection $programmes;
 
+    /**
+     * @var Collection<int, Session>
+     */
+    #[ORM\ManyToMany(targetEntity: Session::class, mappedBy: 'module')]
+    private Collection $sessions;
+
     public function __construct()
     {
         $this->programmes = new ArrayCollection();
+        $this->sessions = new ArrayCollection();
     }
 
 
@@ -89,6 +96,33 @@ class Module
             if ($programme->getModule() === $this) {
                 $programme->setModule(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Session>
+     */
+    public function getSessions(): Collection
+    {
+        return $this->sessions;
+    }
+
+    public function addSession(Session $session): static
+    {
+        if (!$this->sessions->contains($session)) {
+            $this->sessions->add($session);
+            $session->addModule($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSession(Session $session): static
+    {
+        if ($this->sessions->removeElement($session)) {
+            $session->removeModule($this);
         }
 
         return $this;

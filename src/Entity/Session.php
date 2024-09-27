@@ -52,12 +52,18 @@ class Session
     #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'session')]
     private Collection $programmes;
 
+       /**
+     * @var Collection<int, Module>
+     */
+    #[ORM\ManyToMany(targetEntity: Module::class, inversedBy: 'sessions')]
+    private Collection $modules;
+
     public function __construct()
     {
         $this->stagiaires = new ArrayCollection();
         $this->stagiaire = new ArrayCollection();
         $this->programmes = new ArrayCollection();
-    }
+        $this->modules = new ArrayCollection();    }
 
     public function getId(): ?int
     {
@@ -202,6 +208,31 @@ class Session
                 $programme->setSession(null);
             }
         }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, Module>
+     */
+    public function getModules(): Collection
+    {
+        return $this->modules;
+    }
+
+    public function addModule(Module $module): static
+    {
+        if (!$this->modules->contains($module)) {
+            $this->modules->add($module);
+        }
+
+        return $this;
+    }
+
+    public function removeModule(Module $module): static
+    {
+        $this->modules->removeElement($module);
 
         return $this;
     }

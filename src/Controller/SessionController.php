@@ -23,15 +23,11 @@ class SessionController extends AbstractController
     }
 
     #[Route('/session/{id}', name: 'show_session')]
-    public function show(ModuleRepository $moduleRepository,Session $session): Response
+    public function show(Session $session): Response
     {
-        $modules = $moduleRepository->findBy([], ["nom" => "ASC"]);
         return $this->render('session/show.html.twig', [
             'session' => $session,
-            'modules' => $modules,
-            'module' => 'module',
-
         ]);
-
     }
+    
 }

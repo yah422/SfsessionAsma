@@ -1,13 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Détail session {% endblock %}
+{% block title %}Détail session{% endblock %}
 
 {% block body %}
-
 <div class="content mt-12">
 
     {# --------------------------------  Affichage details session  ----------------------------- #}
-
     <div id="ficheStagiaire" class="mb-6">
         <h1 class="text-2xl font-bold">Détails de la session {{ session.nom }}</h1><br>
     </div>
@@ -17,50 +15,47 @@
             <strong class="font-semibold">Intitulé:</strong> {{ session.nom }} <br>
             <strong class="font-semibold">Date de début:</strong> {{ session.dateDebut|date('d/m/Y') }} <br>
             <strong class="font-semibold">Date de fin:</strong> {{ session.dateFin|date('d/m/Y') }} <br>
-            <strong class="font-semibold">Nombre de places: </strong>{{ session.nbrePlace }} <br>
+            <strong class="font-semibold">Nombre de places:</strong> {{ session.nbrePlace }} <br>
         </p>
     </div>
     <br>
 
-    {# ----------------------------   Affichage des modules programmées avec la durée  ---------------------------- #}
-
+    {# ----------------------------   Affichage des modules programmés avec la durée  ---------------------------- #}
     <div id="ficheStagiaire" class="mb-6">
-        <h1 class="text-2xl font-bold">Modules programmés {{ module.nom }}</h1><br>
+        <h1 class="text-2xl font-bold">Modules programmés</h1><br>
     </div>
     
     <div id="DetailsStagiaire" class="bg-white p-6 rounded-lg shadow-md">
-        <p class="text-gray-700">
-            <ul>
-                {% for module in session.modules %}
-                    <li>
-                        <a href="{{ path('show_module', {'id': module.id }) }}"> {{ module.nom }} </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </p>
+        <ul class="text-gray-700">
+            {% for module in session.modules %}
+                <li>
+                    <a href="{{ path('show_module', {'id': module.id }) }}"> {{ module.nom }} </a>
+                </li>
+            {% else %}
+                <li>Aucun module programmé.</li>
+            {% endfor %}
+        </ul><br>        
     </div>
     <br>
 
     {# --------------------------------  Affichage stagiaires  ----------------------------- #}
-
     <div id="ficheStagiaire" class="mb-6">
-        <h3 class="text-2xl font-bold"> Stagiaires participant </h3><br>
+        <h3 class="text-2xl font-bold">Stagiaires participant</h3><br>
     </div>
 
     <div id="DetailsStagiaire" class="bg-white p-6 rounded-lg shadow-md">
-        <p class="text-gray-700">
-            <ul>
-                {% for stagiaire in session.stagiaires %}
-                    <li><a href="{{ path('show_stagiaire', {'id': stagiaire.id }) }}"> {{ stagiaire.nom }} {{ stagiaire.prenom }} </a> </li>
-                  
-                {% endfor %}
-            </ul>
-        </p>
-    </div><br>
-
-
-    
-
+        <ul class="text-gray-700">
+            {% for stagiaire in session.stagiaires %}
+                <li>
+                    <a href="{{ path('show_stagiaire', {'id': stagiaire.id }) }}"> 
+                        {{ stagiaire.nom }} {{ stagiaire.prenom }} 
+                    </a>
+                </li>
+            {% else %}
+                <li>Aucun stagiaire inscrit.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <br>
 </div>
-
 {% endblock %}
