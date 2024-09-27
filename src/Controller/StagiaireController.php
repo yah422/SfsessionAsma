@@ -23,13 +23,7 @@ class StagiaireController extends AbstractController
         ]);
     }
 
-    #[Route('/stagiaire/{id}', name: 'show_stagiaire')]
-    public function show(Stagiaire $stagiaire): Response
-    {
-        return $this->render('stagiaire/show.html.twig', [
-            'stagiaire' => $stagiaire,
-        ]);
-    }
+  
 
     #[Route('/stagiaire/supprimer/{id}', name: 'delete_stagiaire', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
@@ -62,6 +56,14 @@ class StagiaireController extends AbstractController
 
         return $this->render('stagiaire/add.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }  
+    
+    #[Route('/stagiaire/{id}', name: 'show_stagiaire')]
+    public function show(Stagiaire $stagiaire): Response
+    {
+        return $this->render('stagiaire/show.html.twig', [
+            'stagiaire' => $stagiaire,
         ]);
     }
 }

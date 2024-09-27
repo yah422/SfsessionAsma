@@ -18,6 +18,25 @@
             <strong>Email:</strong> {{ stagiaire.email }} <br>
             <strong>Téléphone:</strong> {{ stagiaire.tel }} <br>
         </p>
+        <div id="ficheStagiaire" class="mb-6" >
+            <h3 class="text-2xl font-bold" > Sessions prévues </h3>
+        </div>
+        <div id="DetailsStagiaire" class="bg-white shadow-md rounded p-6" >
+            <p class="text-gray-700">
+                <ul class="divide-y divide-gray-200 border rounded-lg">
+                    {% for session in stagiaire.sessions %}
+                        <li class="px-4 py-2 hover:bg-gray-100"> 
+                            <a href="{{ path('show_session', {'id': session.id }) }}" class="text-blue-600 hover:underline">
+                                {{ session.nom }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="px-4 py-2 text-gray-500">Aucune session trouvée pour ce stagiaire.</li>
+                    {% endfor %}
+                </ul>
+
+            </p>
+        </div>
     </div>
 </div>
 
