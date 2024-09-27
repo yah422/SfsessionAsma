@@ -50,7 +50,6 @@ class Session
     {
         $this->stagiaires = new ArrayCollection();
         $this->stagiaire = new ArrayCollection();
-        $this->programmes = new ArrayCollection();
     }
 
     public function getId(): ?int
