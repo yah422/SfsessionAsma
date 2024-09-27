@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Sessions ! {% endblock %}
+{% block title %} Liste des Sessions {% endblock %}
 
 {% block body %}
 <div class="content mt-12">
@@ -13,9 +13,14 @@
     {% for session in sessions %}
         <ul class="divide-y divide-gray-200 border rounded-lg">   
             <li class="px-4 py-2 hover:bg-gray-100"> 
-                <a href="{{ path('show_session',{'id':session.id })}}" class="text-blue-600 hover:underline"> {{ session.nom }} </a>  
+                <a href="{{ path('show_session', {'id': session.id }) }}" class="text-blue-600 hover:underline">
+                    {{ session.nom }}
+                </a>  
+                <br>
+                <strong>Date de début :</strong> {{ session.dateDebut|date('d/m/Y') }} <br>
+                <strong>Date de fin :</strong> {{ session.dateFin|date('d/m/Y') }} <br>
             </li>
-        </ul>             
+        </ul> <br>            
     {% endfor %}
     
 </div>
