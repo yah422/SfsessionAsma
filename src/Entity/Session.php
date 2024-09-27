@@ -43,12 +43,6 @@ class Session
     #[ORM\ManyToOne(inversedBy: 'session')]
     private ?Formateur $formateur = null;
 
-    /**
-     * @var Collection<int, Programme>
-     */
-    #[ORM\ManyToMany(targetEntity: Programme::class, mappedBy: 'session')]
-    private Collection $programmes;
-
     #[ORM\ManyToOne(inversedBy: 'session')]
     private ?Categorie $categorie = null;
 
@@ -159,32 +153,6 @@ class Session
         return $this;
     }
 
-    /**
-     * @return Collection<int, Programme>
-     */
-    public function getProgrammes(): Collection
-    {
-        return $this->programmes;
-    }
-
-    public function addProgramme(Programme $programme): static
-    {
-        if (!$this->programmes->contains($programme)) {
-            $this->programmes->add($programme);
-            $programme->addSession($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProgramme(Programme $programme): static
-    {
-        if ($this->programmes->removeElement($programme)) {
-            $programme->removeSession($this);
-        }
-
-        return $this;
-    }
 
     public function getCategorie(): ?Categorie
     {

@@ -18,19 +18,10 @@ class Module
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
-    /**
-     * @var Collection<int, Programme>
-     */
-    #[ORM\ManyToMany(targetEntity: Programme::class, mappedBy: 'module')]
-    private Collection $programmes;
 
     #[ORM\ManyToOne(inversedBy: 'module')]
     private ?Categorie $categorie = null;
 
-    public function __construct()
-    {
-        $this->programmes = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -49,32 +40,6 @@ class Module
         return $this;
     }
 
-    /**
-     * @return Collection<int, Programme>
-     */
-    public function getProgrammes(): Collection
-    {
-        return $this->programmes;
-    }
-
-    public function addProgramme(Programme $programme): static
-    {
-        if (!$this->programmes->contains($programme)) {
-            $this->programmes->add($programme);
-            $programme->addModule($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProgramme(Programme $programme): static
-    {
-        if ($this->programmes->removeElement($programme)) {
-            $programme->removeModule($this);
-        }
-
-        return $this;
-    }
 
     public function getCategorie(): ?Categorie
     {
