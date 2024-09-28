@@ -5,7 +5,6 @@
 {% block body %}
 <div class="content mt-12">
 
-    {# --------------------------------  Affichage details session  ----------------------------- #}
     <div id="ficheStagiaire" class="mb-6">
         <h1 class="text-2xl font-bold">Détails de la session {{ session.nom }}</h1><br>
     </div>
@@ -20,25 +19,25 @@
     </div>
     <br>
 
-    {# ----------------------------   Affichage des modules programmés avec la durée  ---------------------------- #}
     <div id="ficheStagiaire" class="mb-6">
         <h1 class="text-2xl font-bold">Modules programmés</h1><br>
     </div>
     
     <div id="DetailsStagiaire" class="bg-white p-6 rounded-lg shadow-md">
         <ul class="text-gray-700">
-            {% for module in session.modules %}
+            {% for programme in session.programmes %}
                 <li>
-                    <a href="{{ path('show_module', {'id': module.id }) }}"> {{ module.nom }} </a>
+                    <a href="{{ path('show_module', {'id': programme.module.id }) }}"><strong>Intitulé : </strong> {{ programme.module.nom }} </a>
+                    <br>
+                    <strong>Durée de la session :</strong> {{ programme.duree }} jours<br>
                 </li>
             {% else %}
                 <li>Aucun module programmé.</li>
             {% endfor %}
-        </ul><br>        
+        </ul>
     </div>
     <br>
 
-    {# --------------------------------  Affichage stagiaires  ----------------------------- #}
     <div id="ficheStagiaire" class="mb-6">
         <h3 class="text-2xl font-bold">Stagiaires participant</h3><br>
     </div>
