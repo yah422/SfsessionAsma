@@ -31,6 +31,9 @@
                         <a href="{{ path('show_session', {'id': session.id }) }}" class="text-blue-600 hover:underline">
                             {{ session.nom }}
                         </a>
+                        <br>
+                        <strong>Date de début :</strong> {{ session.dateDebut|date('d/m/Y') }} <br>
+                        <strong>Date de fin :</strong> {{ session.dateFin|date('d/m/Y') }} <br>
                     </li>
                 {% else %}
                     <li class="px-4 py-2 text-gray-500">Aucune session trouvée pour ce stagiaire.</li>
