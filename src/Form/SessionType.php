@@ -29,24 +29,30 @@ class SessionType extends AbstractType
                 'choice_label' => function (Formateur $formateur) {
                     return $formateur->getNom();
                 },
+                'placeholder' => 'Sélectionner un formateur',
             ])
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => function (Categorie $categorie) {
                     return $categorie->getNom();
                 },
+                'placeholder' => 'Sélectionner une catégorie',
             ])
             ->add('modules', EntityType::class, [
                 'class' => Module::class,
-                'choice_label' => 'nom', // Assurez-vous que 'nom' est un champ valide
-                'multiple' => true, // Pour permettre la sélection de plusieurs modules
-                'expanded' => false, // false pour une liste déroulante
+                'choice_label' => function (Module $module) {
+                    return $module->getNom();
+                },
+                'multiple' => true,
+                'expanded' => false, 
             ])
             ->add('stagiaires', EntityType::class, [
                 'class' => Stagiaire::class,
-                'choice_label' => 'nom', // Assurez-vous que 'nom' est un champ valide
-                'multiple' => true, // Pour permettre la sélection de plusieurs stagiaires
-                'expanded' => false, // false pour une liste déroulante
+                'choice_label' => function (Stagiaire $stagiaire){
+                    return $stagiaire->getNom();
+                },
+                'multiple' => true,
+                'expanded' => false,
             ]);
     }
 
@@ -57,4 +63,3 @@ class SessionType extends AbstractType
         ]);
     }
 }
-
