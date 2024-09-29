@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Form;
 
 use App\Entity\Categorie;
@@ -25,30 +24,30 @@ class SessionType extends AbstractType
             ->add('dateFin', null, [
                 'widget' => 'single_text',
             ])
-            ->add('stagiaires', EntityType::class, [
-                'class' => Stagiaire::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
-            ->add('stagiaire', EntityType::class, [
-                'class' => Stagiaire::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
             ->add('formateur', EntityType::class, [
                 'class' => Formateur::class,
-                'choice_label' => 'id',
+                'choice_label' => function (Formateur $formateur) {
+                    return $formateur->getNom();
+                },
             ])
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
-                'choice_label' => 'id',
+                'choice_label' => function (Categorie $categorie) {
+                    return $categorie->getNom();
+                },
             ])
             ->add('modules', EntityType::class, [
                 'class' => Module::class,
-                'choice_label' => 'id',
-                'multiple' => true,
+                'choice_label' => 'nom', // Assurez-vous que 'nom' est un champ valide
+                'multiple' => true, // Pour permettre la sélection de plusieurs modules
+                'expanded' => false, // false pour une liste déroulante
             ])
-        ;
+            ->add('stagiaires', EntityType::class, [
+                'class' => Stagiaire::class,
+                'choice_label' => 'nom', // Assurez-vous que 'nom' est un champ valide
+                'multiple' => true, // Pour permettre la sélection de plusieurs stagiaires
+                'expanded' => false, // false pour une liste déroulante
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -58,3 +57,4 @@ class SessionType extends AbstractType
         ]);
     }
 }
+
