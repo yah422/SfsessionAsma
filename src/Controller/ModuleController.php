@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Module;
 use App\Entity\Session;
+use App\Form\ModuleType;
 use App\Form\SessionType;
 use App\Repository\ModuleRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,25 +24,26 @@ class ModuleController extends AbstractController
         ]);
     }
 
-    #[Route('/module', name: 'add_module')]
+    #[Route('/module/add', name: 'add_module')]
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $session = new Session();
-        $form = $this->createForm(SessionType::class, $session);
+        $module = new Module(); // Créez un nouvel objet Module ici
+        $form = $this->createForm(ModuleType::class, $module); // Utilisation de ModuleType
         
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($session);
+            $entityManager->persist($module); // l'objet Module
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_module');
         }
-
+    
         return $this->render('module/add.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+    
 
     #[Route('/module/{id}', name: 'show_module')]
     public function show(Module $module): Response
