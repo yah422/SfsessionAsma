@@ -26,37 +26,45 @@
                     <li>
                         <a class="block py-2 text-gray-700 hover:text-blue-600 lg:inline-block" href="{{ path('app_session') }}">Sessions</a>
                     </li>
-                    <li>
-                        <a class="block py-2 text-gray-700 hover:text-blue-600 lg:inline-block" href="{{ path('app_module') }}"> Modules </a>
-                    </li>
-                    <li>
-                        <a class="block py-2 text-gray-700 hover:text-blue-600 lg:inline-block" href="{{ path('app_stagiaire') }}">Stagiaires</a>
-                    </li>
-                    <li>
-                        <a class="block py-2 text-gray-700 hover:text-blue-600 lg:inline-block" href="{{ path('app_login') }}">Se connecter</a>
-                    </li>
-                    <li>
-                        <a class="block py-2 text-gray-700 hover:text-blue-600 lg:inline-block" href="{{ path('app_register') }}">S'inscrire</a>
-                    </li>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li>
+                            <a class="block py-2 text-gray-700 hover:text-blue-600 lg:inline-block" href="{{ path('app_module') }}"> Modules </a>
+                        </li>
+                        <li>
+                            <a class="block py-2 text-gray-700 hover:text-blue-600 lg:inline-block" href="{{ path('app_stagiaire') }}">Stagiaires</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% if not app.user %}
+                        <li>
+                            <a class="block py-2 text-gray-700 hover:text-blue-600 lg:inline-block" href="{{ path('app_login') }}">Se connecter</a>
+                        </li>
+                        <li>
+                            <a class="block py-2 text-gray-700 hover:text-blue-600 lg:inline-block" href="{{ path('app_register') }}">S'inscrire</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a class="block py-2 text-gray-700 hover:text-blue-600 lg:inline-block" href="{{ path('app_logout') }}">Se déconnecter</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
-    
-      
 
-        {% block body %}
-        {% endblock %}
-        
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-            <script>
-                document.getElementById('navbar-toggler').onclick = function() {
-                    const navbarNav = document.getElementById('navbarNav');
-                    navbarNav.classList.toggle('hidden');
-                };
-            </script>  
-        {% endblock %}
+    {% block body %}
+    {% endblock %}
+    
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+        <script>
+            document.getElementById('navbar-toggler').onclick = function() {
+                const navbarNav = document.getElementById('navbarNav');
+                navbarNav.classList.toggle('hidden');
+            };
+        </script>  
+    {% endblock %}
     </body>
 </html>
