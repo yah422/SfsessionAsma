@@ -1,0 +1,35 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'une session{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+        <div id="ficheStagiaire" class="flex items-center mb-6">
+            <img id="icons" src="{{ asset('img/book.png') }}" alt="modules" class="h-8 w-8"> 
+            <h1 class="text-2xl font-bold ml-4"> Ajouter un Module </h1>
+        </div>
+
+        {{ form_start(moduleForm, {'attr': {'class': 'space-y-4'}}) }}
+
+            <div class="space-y-1">
+                {{ form_label(moduleForm.nom, 'Nom du Module', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                {{ form_widget(moduleForm.nom, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
+                {{ form_errors(moduleForm.nom, {'attr': {'class': 'text-red-500 text-sm'}}) }}
+            </div>
+
+            <div class="space-y-1">
+                {{ form_label(moduleForm.categorie, 'Catégorie', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                {{ form_widget(moduleForm.categorie, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
+                {{ form_errors(moduleForm.categorie, {'attr': {'class': 'text-red-500 text-sm'}}) }}
+            </div>
+
+            <button type="submit" class="text-white font-bold py-2 px-4 rounded" style="background-color: #346E74;">
+                Enregistrer
+            </button>       
+        {{ form_end(moduleForm) }}
+       
+    </div>
+{% endblock %}
+
+
