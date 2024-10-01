@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SessionController extends AbstractController
@@ -45,7 +46,17 @@ class SessionController extends AbstractController
         ]);
     }
     
+    #[Route('/session/supprimer/{id}', name: 'delete_session', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(Session $session, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($session);
+        $entityManager->flush();
 
+        $this->addFlash('success', 'Session supprimé avec succès !');
+        
+        return $this->redirectToRoute('app_session');
+    }
 
     #[Route('/session/{id}', name: 'show_session')]
     public function show(Session $session): Response
