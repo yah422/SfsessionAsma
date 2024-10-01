@@ -21,14 +21,9 @@ class StagiaireType extends AbstractType
             ->add('dateNaissance', null, [
                 'widget' => 'single_text',
             ])
-            ->add('session', EntityType::class, [
-                'class' => Session::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
             ->add('sessions', EntityType::class, [
                 'class' => Session::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
                 'multiple' => true,
             ])
         ;
