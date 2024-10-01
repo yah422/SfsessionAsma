@@ -57,9 +57,12 @@
         <br>
     </div>
     <br>
-    <a href="{{ path('app_add') }}" class="text-white font-bold py-2 px-4 rounded" style="background-color: #346E74;">
-        Ajouter une session
-    </a> 
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_add') }}" class="text-white font-bold py-2 px-4 rounded" style="background-color: #346E74;">
+            Ajouter une session
+        </a> 
+    {% endif %}
+     
     
 </div>
 {% endblock %}
