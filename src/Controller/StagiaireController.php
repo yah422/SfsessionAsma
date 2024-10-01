@@ -23,8 +23,6 @@ class StagiaireController extends AbstractController
         ]);
     }
 
-  
-
     #[Route('/stagiaire/supprimer/{id}', name: 'delete_stagiaire', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Stagiaire $stagiaire, EntityManagerInterface $entityManager): Response
@@ -37,6 +35,7 @@ class StagiaireController extends AbstractController
         return $this->redirectToRoute('app_stagiaire');
     }
 
+    
     #[Route('/stagiaire/ajouter', name: 'add_stagiaire')]
     #[IsGranted('ROLE_ADMIN')]
     public function add(Request $request, EntityManagerInterface $entityManager): Response
