@@ -9,48 +9,21 @@
             <h1 class="text-2xl font-bold mb-6 text-gray-800"> Ajouter un.e stagiaire </h1>
         </div> 
 
-        {{ form_start(form) }}
-            <div class="space-y-4">
-                <div class="space-y-1">
-                    {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    {{ form_widget(form.nom, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
-                    {{ form_errors(form.nom, {'attr': {'class': 'text-red-500 text-sm'}}) }}
-                </div>
+        {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
 
-                <div class="space-y-1">
-                    {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    {{ form_widget(form.prenom, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
-                    {{ form_errors(form.prenom, {'attr': {'class': 'text-red-500 text-sm'}}) }}
-                </div>
-
-                <div class="space-y-1">
-                    {{ form_label(form.email, 'Email', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    {{ form_widget(form.email, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
-                    {{ form_errors(form.email, {'attr': {'class': 'text-red-500 text-sm'}}) }}
-                </div>
-
-                <div class="space-y-1">
-                    {{ form_label(form.tel, 'Téléphone', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    {{ form_widget(form.tel, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
-                    {{ form_errors(form.tel, {'attr': {'class': 'text-red-500 text-sm'}}) }}
-                </div>
-
-                <div class="space-y-1">
-                    {{ form_label(form.dateNaissance, 'Date de Naissance', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    {{ form_widget(form.dateNaissance, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
-                    {{ form_errors(form.dateNaissance, {'attr': {'class': 'text-red-500 text-sm'}}) }}
-                </div>
-
-                <div class="space-y-1">
-                    {{ form_label(form.sessions, 'Sessions', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    {{ form_widget(form.sessions, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
-                    {{ form_errors(form.sessions, {'attr': {'class': 'text-red-500 text-sm'}}) }}
-                </div>
-                <br>
-                <button type="submit" class="text-white font-bold py-2 px-4 rounded" style="background-color: #346E74;">
-                    Enregistrer
-                </button>
-            </div>
+            {{ form_row(form.nom, {'label': 'Nom', 'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
+            
+            {{ form_row(form.prenom, {'label': 'Prénom', 'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
+            
+            {{ form_row(form.email, {'label': 'Email', 'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
+            
+            {{ form_row(form.tel, {'label': 'Téléphone', 'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
+            
+            {{ form_row(form.dateNaissance, {'label': 'Date de Naissance', 'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
+            
+            <button type="submit" class="text-white font-bold py-2 px-4 rounded" style="background-color: #346E74;">
+                Enregistrer
+            </button>      
         {{ form_end(form) }}
     </div>
 {% endblock %}
