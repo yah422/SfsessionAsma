@@ -55,9 +55,12 @@ class Session
        /**
      * @var Collection<int, Module>
      */
-    #[ORM\ManyToMany(targetEntity: Module::class, inversedBy: 'sessions')]
-    private Collection $modules;
-
+    
+     /**
+     * @ORM\ManyToMany(targetEntity=Module::class, mappedBy="sessions")
+     */
+    private $modules;
+    
     public function __construct()
     {
         $this->stagiaires = new ArrayCollection();

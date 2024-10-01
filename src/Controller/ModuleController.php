@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ModuleController extends AbstractController
@@ -44,7 +45,16 @@ class ModuleController extends AbstractController
         ]);
     }
     
-
+    #[Route('/module/supprimer/{id}', name: 'delete_module', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(Module $module, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($module);
+        $entityManager->flush();
+    
+        return $this->redirectToRoute('app_module');
+    }
+    
     #[Route('/module/{id}', name: 'show_module')]
     public function show(Module $module): Response
     {

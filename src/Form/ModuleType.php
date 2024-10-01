@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Categorie;
 use App\Entity\Module;
 use App\Entity\Session;
+use Doctrine\DBAL\Types\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,11 +20,6 @@ class ModuleType extends AbstractType
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'nom',
-            ])
-            ->add('sessions', EntityType::class, [
-                'class' => Session::class,
-                'choice_label' => 'nom',
-                'multiple' => true,
             ])
         ;
     }

@@ -22,6 +22,10 @@ class Module
     #[ORM\ManyToOne(inversedBy: 'module')]
     private ?Categorie $categorie = null;
 
+      /**
+     * @ORM\ManyToMany(targetEntity=Session::class, inversedBy="modules")
+     */
+    private $sessions;
     /**
      * @var Collection<int, Programme>
      */
@@ -31,8 +35,6 @@ class Module
     /**
      * @var Collection<int, Session>
      */
-    #[ORM\ManyToMany(targetEntity: Session::class, mappedBy: 'module')]
-    private Collection $sessions;
 
     public function __construct()
     {

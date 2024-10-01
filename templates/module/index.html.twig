@@ -13,10 +13,20 @@
 
     {% for module in modules %}
         <ul class="divide-y divide-gray-200 border rounded-lg">   
-            <li class="px-4 py-2 hover:bg-gray-100"> 
+            <li style="display: flex;
+            flex-direction: row;
+            align-content: space-between;
+            justify-content: space-between;
+            align-items: center;" class="px-4 py-2 hover:bg-gray-100"> 
                 <a href="{{ path('show_module', {'id': module.id }) }}" class="text-blue-600 hover:underline">
                     {{ module.nom }}
                 </a>
+                <form action="{{ path('delete_module', {'id': module.id}) }}" method="post" onsubmit="return confirm('Etes-vous sûre ?');">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="text-white font-bold py-2 px-4 rounded" style="background-color: #346E74;">
+                        Supprimer
+                    </button>
+                </form>
             </li>
         </ul><br>
     {% else %}

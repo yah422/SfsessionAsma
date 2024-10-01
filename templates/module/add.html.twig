@@ -24,12 +24,6 @@
                 {{ form_errors(form.categorie, {'attr': {'class': 'text-red-500 text-sm'}}) }}
             </div>
 
-            <div class="space-y-1">
-                {{ form_label(form.sessions, 'Modules', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                {{ form_widget(form.sessions, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500'}}) }}
-                {{ form_errors(form.sessions, {'attr': {'class': 'text-red-500 text-sm'}}) }}
-            </div>
-
             <button type="submit" class="text-white font-bold py-2 px-4 rounded" style="background-color: #346E74;">
                 Enregistrer
             </button>       
