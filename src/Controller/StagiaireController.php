@@ -59,10 +59,14 @@ class StagiaireController extends AbstractController
     }  
     
     #[Route('/stagiaire/{id}', name: 'show_stagiaire')]
-    public function show(Stagiaire $stagiaire): Response
+    public function show(Stagiaire $stagiaire,StagiaireRepository $stagiaireRepository): Response
     {
+        $stagiaires = $stagiaireRepository->findBy([], ["nom" => "ASC"]);
         return $this->render('stagiaire/show.html.twig', [
+            'stagiaires' => $stagiaires,
             'stagiaire' => $stagiaire,
+
+
         ]);
     }
 }
