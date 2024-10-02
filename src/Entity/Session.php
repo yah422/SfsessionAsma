@@ -29,6 +29,11 @@ class Session
     private ?\DateTimeInterface $dateFin = null;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Module::class, inversedBy="sessions")
+     */
+    private $modules;
+
+    /**
      * @var Collection<int, Stagiaire>
      */
     #[ORM\ManyToMany(targetEntity: Stagiaire::class, mappedBy: 'sessions')]

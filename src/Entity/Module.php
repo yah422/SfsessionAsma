@@ -22,9 +22,10 @@ class Module
     #[ORM\ManyToOne(inversedBy: 'module')]
     private ?Categorie $categorie = null;
 
-      /**
-     * @ORM\ManyToMany(targetEntity=Session::class, inversedBy="modules")
+    /**
+     * @ORM\ManyToMany(targetEntity=Session::class, mappedBy="modules")
      */
+    
     private $sessions;
     /**
      * @var Collection<int, Programme>

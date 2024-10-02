@@ -25,15 +25,25 @@
     
     <div id="DetailsStagiaire" class="bg-white p-6 rounded-lg shadow-md">
         <ul class="text-gray-700">
-            
             {% for programme in session.programmes %}
                 <li>
-                    <a href="{{ path('show_module', {'id': programme.module.id }) }}"><strong>Intitulé : </strong> {{ programme.module.nom }} </a>
+                    <a href="{{ path('show_module', {'id': programme.module.id }) }}">
+                        <strong>Intitulé : </strong> {{ programme.module.nom }} 
+                    </a>
                     <br>
                     <strong>Durée de la session :</strong> {{ programme.duree }} jours<br>
                 </li>
             {% else %}
                 <li>Aucun module programmé.</li>
+            {% endfor %}
+        </ul>
+
+        <h2 class="text-xl font-semibold mt-4">Modules non programmés :</h2>
+        <ul>
+            {% for module in nonProgrammes %}
+                <li>{{ module.nom }}</li>
+            {% else %}
+                <li>Aucun module disponible</li>
             {% endfor %}
         </ul>
     </div>
@@ -54,23 +64,22 @@
             {% else %}
                 <li>Aucun stagiaire inscrit.</li>
             {% endfor %}
-            <br>
-            <h2 class="text-xl font-semibold mt-4">Stagiaires non inscrits :</h2>
-            <br>
+        </ul>
+        <br>
+
+        <h2 class="text-xl font-semibold mt-4">Stagiaires non inscrits :</h2>
+        <ul>
             {% if nonInscrits is empty %}
                 <li>Aucun stagiaire non inscrit trouvé.</li>
             {% else %}
-                <ul>
-                    {% for stagiaire in nonInscrits %}
-                        <li>{{ stagiaire.nom }} {{ stagiaire.prenom }}</li>
-                    {% endfor %}
-                </ul>
+                {% for stagiaire in nonInscrits %}
+                    <li>{{ stagiaire.nom }}</li>
+                {% else %}
+                    <li>Aucun stagiaire disponible</li>
+                {% endfor %}
             {% endif %}
         </ul>
         <br>
     </div>
-    
-     
-    
 </div>
 {% endblock %}
