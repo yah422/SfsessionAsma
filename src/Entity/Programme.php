@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProgrammeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProgrammeRepository::class)]
@@ -17,10 +19,16 @@ class Programme
     private ?int $duree = null;
 
     #[ORM\ManyToOne(inversedBy: 'programmes')]
-    private ?Module $module = null;
+    private ?Session $session = null;
 
     #[ORM\ManyToOne(inversedBy: 'programmes')]
-    private ?Session $session = null;
+    private ?Module $module = null;
+
+
+    public function __construct()
+    {
+        
+    }
 
     public function getId(): ?int
     {
@@ -39,6 +47,18 @@ class Programme
         return $this;
     }
 
+    public function getSession(): ?Session
+    {
+        return $this->session;
+    }
+
+    public function setSession(?Session $session): static
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
     public function getModule(): ?Module
     {
         return $this->module;
@@ -51,15 +71,7 @@ class Programme
         return $this;
     }
 
-    public function getSession(): ?Session
-    {
-        return $this->session;
-    }
-
-    public function setSession(?Session $session): static
-    {
-        $this->session = $session;
-
-        return $this;
-    }
+    // public function __toString(){
+    //     return $this->module;
+    // }
 }
