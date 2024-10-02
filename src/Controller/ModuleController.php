@@ -34,7 +34,9 @@ class ModuleController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($module); // l'objet Module
+            
             $entityManager->flush();
     
             return $this->redirectToRoute('app_module');
