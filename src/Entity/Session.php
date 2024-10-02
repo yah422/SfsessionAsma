@@ -31,19 +31,13 @@ class Session
     /**
      * @var Collection<int, Stagiaire>
      */
-    #[ORM\ManyToMany(targetEntity: Stagiaire::class, mappedBy: 'session')]
+    #[ORM\ManyToMany(targetEntity: Stagiaire::class, mappedBy: 'sessions')]
     private Collection $stagiaires;
 
-    /**
-     * @var Collection<int, Stagiaire>
-    //  */
-    // #[ORM\ManyToMany(targetEntity: Stagiaire::class, inversedBy: 'sessions')]
-    // private Collection $stagiaire;
-
-    #[ORM\ManyToOne(inversedBy: 'session')]
+    #[ORM\ManyToOne(inversedBy: 'sessions')]
     private ?Formateur $formateur = null;
 
-    #[ORM\ManyToOne(inversedBy: 'session')]
+    #[ORM\ManyToOne(inversedBy: 'sessions')]
     private ?Categorie $categorie = null;
 
     /**
@@ -52,21 +46,11 @@ class Session
     #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'session')]
     private Collection $programmes;
 
-       /**
-     * @var Collection<int, Module>
-     */
-    
-     /**
-     * @ORM\ManyToMany(targetEntity=Module::class, mappedBy="sessions")
-     */
-    private $modules;
-    
     public function __construct()
     {
         $this->stagiaires = new ArrayCollection();
-        // $this->stagiaire = new ArrayCollection();
         $this->programmes = new ArrayCollection();
-        $this->modules = new ArrayCollection();    }
+    }
 
     public function getId(): ?int
     {
@@ -81,7 +65,6 @@ class Session
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -93,7 +76,6 @@ class Session
     public function setNbrePlace(int $nbrePlace): static
     {
         $this->nbrePlace = $nbrePlace;
-
         return $this;
     }
 
@@ -105,7 +87,6 @@ class Session
     public function setDateDebut(\DateTimeInterface $dateDebut): static
     {
         $this->dateDebut = $dateDebut;
-
         return $this;
     }
 
@@ -117,7 +98,6 @@ class Session
     public function setDateFin(\DateTimeInterface $dateFin): static
     {
         $this->dateFin = $dateFin;
-
         return $this;
     }
 
@@ -129,18 +109,12 @@ class Session
         return $this->stagiaires;
     }
 
-    public function setStagiaires(): Collection
-    {
-        return $this->stagiaires;
-    }
-
     public function addStagiaire(Stagiaire $stagiaire): static
     {
         if (!$this->stagiaires->contains($stagiaire)) {
             $this->stagiaires->add($stagiaire);
             $stagiaire->addSession($this);
         }
-
         return $this;
     }
 
@@ -149,17 +123,8 @@ class Session
         if ($this->stagiaires->removeElement($stagiaire)) {
             $stagiaire->removeSession($this);
         }
-
         return $this;
     }
-
-    /**
-     * @return Collection<int, Stagiaire>
-     */
-    // public function getStagiaire(): Collection
-    // {
-    //     return $this->stagiaire;
-    // }
 
     public function getFormateur(): ?Formateur
     {
@@ -169,10 +134,8 @@ class Session
     public function setFormateur(?Formateur $formateur): static
     {
         $this->formateur = $formateur;
-
         return $this;
     }
-
 
     public function getCategorie(): ?Categorie
     {
@@ -182,11 +145,11 @@ class Session
     public function setCategorie(?Categorie $categorie): static
     {
         $this->categorie = $categorie;
-
         return $this;
     }
 
-    public function __toString(){
+    public function __toString()
+    {
         return $this->nom;
     }
 
@@ -204,7 +167,6 @@ class Session
             $this->programmes->add($programme);
             $programme->setSession($this);
         }
-
         return $this;
     }
 
@@ -216,32 +178,6 @@ class Session
                 $programme->setSession(null);
             }
         }
-
-        return $this;
-    }
-
-
-    /**
-     * @return Collection<int, Module>
-     */
-    public function getModules(): Collection
-    {
-        return $this->modules;
-    }
-
-    public function addModule(Module $module): static
-    {
-        if (!$this->modules->contains($module)) {
-            $this->modules->add($module);
-        }
-
-        return $this;
-    }
-
-    public function removeModule(Module $module): static
-    {
-        $this->modules->removeElement($module);
-
         return $this;
     }
 }
