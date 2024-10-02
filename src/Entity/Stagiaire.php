@@ -34,8 +34,8 @@ class Stagiaire
     /**
      * @var Collection<int, Session>
      */
-    #[ORM\ManyToMany(targetEntity: Session::class, inversedBy: 'stagiaires')]
-    private Collection $session;
+    // #[ORM\ManyToMany(targetEntity: Session::class, inversedBy: 'stagiaires')]
+    // private Collection $session;
 
     /**
      * @var Collection<int, Session>
@@ -45,7 +45,7 @@ class Stagiaire
 
     public function __construct()
     {
-        $this->session = new ArrayCollection();
+        // $this->session = new ArrayCollection();
         $this->sessions = new ArrayCollection();
     }
 
@@ -117,15 +117,15 @@ class Stagiaire
     /**
      * @return Collection<int, Session>
      */
-    public function getSession(): Collection
+    public function getSessions(): Collection
     {
-        return $this->session;
+        return $this->sessions;
     }
 
     public function addSession(Session $session): static
     {
-        if (!$this->session->contains($session)) {
-            $this->session->add($session);
+        if (!$this->sessions->contains($session)) {
+            $this->sessions->add($session);
         }
 
         return $this;
@@ -133,7 +133,7 @@ class Stagiaire
 
     public function removeSession(Session $session): static
     {
-        $this->session->removeElement($session);
+        $this->sessions->removeElement($session);
 
         return $this;
     }
@@ -141,7 +141,7 @@ class Stagiaire
     /**
      * @return Collection<int, Session>
      */
-    public function getSessions(): Collection
+    public function setSessions(): Collection
     {
         return $this->sessions;
     }
