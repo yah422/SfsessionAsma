@@ -53,6 +53,16 @@
             {% else %}
                 <li>Aucun stagiaire inscrit.</li>
             {% endfor %}
+            <br>
+            {# Afficher les stagiaires non inscrits #}
+            <h2 class="text-xl font-semibold mt-4">Stagiaires non inscrits :</h2>
+            <br>
+            {% for stagiaire in nonInscrits %}
+                <li>{{ stagiaire.nom }} {{ stagiaire.prenom }}</li>
+            {% else %}
+                <li>Aucun stagiaire non inscrit trouvé.</li>
+            {% endfor %}
+    
         </ul>
         <br>
     </div>
