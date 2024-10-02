@@ -1,28 +1,45 @@
 <?php
 namespace App\Form;
 
-use App\Entity\Categorie;
-use App\Entity\Formateur;
 use App\Entity\Module;
 use App\Entity\Session;
+use App\Entity\Categorie;
+use App\Entity\Formateur;
 use App\Entity\Stagiaire;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class SessionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('nbrePlace')
-            ->add('dateDebut', null, [
-                'widget' => 'single_text',
+            ->add('nom', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
             ])
-            ->add('dateFin', null, [
+            ->add('nbrePlace', NumberType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('dateDebut', DateType::class, [
                 'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('dateFin', DateType::class, [
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'form-control'
+                ]
             ])
             ->add('formateur', EntityType::class, [
                 'class' => Formateur::class,
@@ -38,22 +55,7 @@ class SessionType extends AbstractType
                 },
                 'placeholder' => 'Sélectionner une catégorie',
             ])
-            ->add('modules', EntityType::class, [
-                'class' => Module::class,
-                'choice_label' => function (Module $module) {
-                    return $module->getNom();
-                },
-                'multiple' => true,
-                'expanded' => false, 
-            ])
-            ->add('stagiaires', EntityType::class, [
-                'class' => Stagiaire::class,
-                'choice_label' => function (Stagiaire $stagiaire){
-                    return $stagiaire->getNom();
-                },
-                'multiple' => true,
-                'expanded' => false,
-            ]);
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

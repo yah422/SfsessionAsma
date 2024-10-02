@@ -35,7 +35,9 @@ class SessionController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($session);
+            
             $entityManager->flush();
     
             return $this->redirectToRoute('app_session');
