@@ -35,7 +35,7 @@ class SessionRepository extends ServiceEntityRepository
         // On obtient donc les stagiaires non inscrits pour une session définie
         $sub->select('st')
             ->from('App\Entity\Stagiaire','st')
-            ->where($sub->expr()->notIn('st.it',$qb->getDQL()))
+            ->where($sub->expr()->notIn('st.id',$qb->getDQL()))
             // requête paramétrée
             ->setParameter('id',$session_id)
             // trier la liste des stagiaires sur le nom de famille
@@ -46,6 +46,32 @@ class SessionRepository extends ServiceEntityRepository
         return $query->getResult();
 
     }
+
+    public function findNonProgrammes($session_id)
+    {
+        // Récupérer l'EntityManager
+        $em = $this->getEntityManager();
+
+        //Sélectionner tous les modules associés à la session
+        $subQuery = $em->createQueryBuilder();
+        
+        $subQuery->select('m')
+            ->from('App\Entity\Module', 'm')
+            ->leftJoin('m.sessions', 's')
+            ->where('s.id = :sessionId')
+            ->setParameter('sessionId', $session_id);
+
+        //Sélectionner tous les modules qui ne sont pas associés à la session
+        $mainQuery = $em->createQueryBuilder();
+        $mainQuery->select('mt')
+            ->from('App\Entity\Module', 'mt')
+            ->where($mainQuery->expr()->notIn('mt.id', $subQuery->getDQL()))
+            ->orderBy('mt.nom', 'ASC');
+
+        // Exécuter la requête
+        return $mainQuery->getQuery()->getResult();
+    }
+    
 //    /**
 //     * @return Session[] Returns an array of Session objects
 //     */

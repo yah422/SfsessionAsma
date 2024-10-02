@@ -25,6 +25,7 @@
     
     <div id="DetailsStagiaire" class="bg-white p-6 rounded-lg shadow-md">
         <ul class="text-gray-700">
+            
             {% for programme in session.programmes %}
                 <li>
                     <a href="{{ path('show_module', {'id': programme.module.id }) }}"><strong>Intitulé : </strong> {{ programme.module.nom }} </a>
@@ -46,26 +47,29 @@
         <ul class="text-gray-700">
             {% for stagiaire in session.stagiaires %}
                 <li>
-                    <a href="{{ path('show_stagiaire', {'id': stagiaire.id }) }}"> 
-                        {{ stagiaire.nom }} {{ stagiaire.prenom }} 
+                    <a href="{{ path('show_stagiaire', {'id': stagiaire.id }) }}">
+                        {{ stagiaire.nom }} {{ stagiaire.prenom }}
                     </a>
                 </li>
             {% else %}
                 <li>Aucun stagiaire inscrit.</li>
             {% endfor %}
             <br>
-            {# Afficher les stagiaires non inscrits #}
             <h2 class="text-xl font-semibold mt-4">Stagiaires non inscrits :</h2>
             <br>
-            {% for stagiaire in nonInscrits %}
-                <li>{{ stagiaire.nom }} {{ stagiaire.prenom }}</li>
-            {% else %}
+            {% if nonInscrits is empty %}
                 <li>Aucun stagiaire non inscrit trouvé.</li>
-            {% endfor %}
-    
+            {% else %}
+                <ul>
+                    {% for stagiaire in nonInscrits %}
+                        <li>{{ stagiaire.nom }} {{ stagiaire.prenom }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </ul>
         <br>
     </div>
+    
      
     
 </div>
