@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SessionController extends AbstractController
@@ -50,14 +51,25 @@ class SessionController extends AbstractController
     
     #[Route('/session/supprimer/{id}', name: 'delete_session', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(Session $session, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, CsrfTokenManagerInterface $csrfTokenManager, Session $session, EntityManagerInterface $entityManager,int $id): Response
     {
-        $entityManager->remove($session);
-        $entityManager->flush();
+        if (!$session) {
+            throw $this->createNotFoundException('No session found for id ' . $id);
+        }
+     
+        // Vérifier le token CSRF
+        if ($this->isCsrfTokenValid('delete_session', $request->request->get('_token'))) {
+            // Si valide, on peut supprimer la session
+            $entityManager->remove($session);
+            $entityManager->flush();
 
-        $this->addFlash('success', 'Session supprimé avec succès !');
+            // Redirection après suppression
+            return $this->redirectToRoute('app_session');
+        }
+     
+        // Si le token est invalide, lever une exception
+        throw $this->createAccessDeniedException('Token CSRF invalide.');
         
-        return $this->redirectToRoute('app_session');
     }
 
     #[Route('/session/{id}', name: 'show_session')]
