@@ -8,6 +8,7 @@ use App\Form\SessionType;
 use App\Repository\ModuleRepository;
 use App\Repository\SessionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,17 +29,21 @@ class SessionController extends AbstractController
     }
 
     #[Route('/session/add', name: 'app_add')]
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
+        // Vérification du rôle 'ROLE_ADMIN'
+        if (!$security->isGranted('ROLE_ADMIN')) {
+            // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
+            return $this->redirectToRoute('app_error');       
+        }
+    
         $session = new Session();
         $form = $this->createForm(SessionType::class, $session);
     
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-
             $entityManager->persist($session);
-            
             $entityManager->flush();
     
             return $this->redirectToRoute('app_session');
@@ -48,6 +53,7 @@ class SessionController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    
     
     #[Route('/session/supprimer/{id}', name: 'delete_session', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
