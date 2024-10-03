@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Stagiaires ! {% endblock %}
+
+{% block body %}
+<div class="content mt-12">
+
+    <div id="ficheStagiaire" class="flex items-center mb-6">
+        <img id="icons" src="{{ asset('img/browser.png') }}" alt="error" class="h-8 w-8"> 
+        <h1 class="text-2xl font-bold ml-4"> Accès refusé </h1>
+    </div>
+
+    <br>
+    <div>
+        <strong> <p>Désolé, vous n'avez pas les permissions nécessaires pour accéder à cette page.</p>
+        <a href="{{ path('home') }}" class="btn btn-primary">Retour à l'accueil</a> </strong>
+    </div>
+ 
+    
+</div>
+{% endblock %}

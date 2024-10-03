@@ -8,6 +8,7 @@ use App\Form\ModuleType;
 use App\Form\SessionType;
 use App\Repository\ModuleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,8 +27,15 @@ class ModuleController extends AbstractController
     }
 
     #[Route('/module/add', name: 'add_module')]
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, EntityManagerInterface $entityManager,Security $security): Response
     {
+
+          // Vérification du rôle 'ROLE_ADMIN'
+          if (!$security->isGranted('ROLE_ADMIN')) {
+            // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
+            return $this->render('module/errorPage.html.twig');     
+        }
+
         $module = new Module(); // Créez un nouvel objet Module ici
         $form = $this->createForm(ModuleType::class, $module); // Utilisation de ModuleType
         
