@@ -34,7 +34,7 @@ class SessionController extends AbstractController
         // Vérification du rôle 'ROLE_ADMIN'
         if (!$security->isGranted('ROLE_ADMIN')) {
             // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
-            return $this->redirectToRoute('app_error');       
+            return $this->render('session/errorPage.html.twig');     
         }
     
         $session = new Session();
