@@ -25,10 +25,14 @@
                     <strong>Date de début :</strong> {{ session.dateDebut|date('d/m/Y') }} <br>
                     <strong>Date de fin :</strong> {{ session.dateFin|date('d/m/Y') }} <br>
                 </div>
+
+                {% if is_granted('ROLE_ADMIN') %}
                 <form action="{{ path('delete_session', {'id': session.id}) }}" method="post" onsubmit="return confirm('Etes-vous sûre de vouloir supprimer cette session ?');">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ session.id) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_session' ~ session.id) }}">
                     <button style="background-color: #346E74;" type="submit" class="text-white font-bold py-2 px-4 rounded"> Supprimer </button>
                 </form>
+                {% endif %}
+
             </li>
         </ul> <br>            
     {% endfor %}
