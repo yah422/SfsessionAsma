@@ -51,25 +51,27 @@ class SessionRepository extends ServiceEntityRepository
     {
         // Récupérer l'EntityManager
         $em = $this->getEntityManager();
-    
-        // Sélectionner tous les modules associés à la session
         $subQuery = $em->createQueryBuilder();
+
+        // Sélectionner tous les modules associés à la session
         $subQuery->select('m')
             ->from('App\Entity\Module', 'm')
-            ->leftJoin('m.sessions', 's')
-            ->where('s.id = :sessionId')
-            ->setParameter('sessionId', $session_id);
-
+            ->leftJoin('m.programmes', 'mp')
+            ->where('mp.session = :id');
     
         // Sélectionner tous les modules qui ne sont pas associés à la session
         $mainQuery = $em->createQueryBuilder();
+
+
         $mainQuery->select('mt')
             ->from('App\Entity\Module', 'mt')
             ->where($mainQuery->expr()->notIn('mt.id', $subQuery->getDQL()))
+            ->setParameter('id',$session_id)
             ->orderBy('mt.nom', 'ASC');
     
-        // Exécuter la requête
-        return $mainQuery->getQuery()->getResult();
+        // Renvoyer le résultat
+        $query = $mainQuery->getQuery();
+        return $query->getResult();
     }
     
     

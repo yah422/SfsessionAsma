@@ -15,7 +15,7 @@ class ModuleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Module::class);
     }
-
+    
     //    /**
     //     * @return Module[] Returns an array of Module objects
     //     */
