@@ -21,7 +21,7 @@
                     {{ stagiaire.nom }} {{ stagiaire.prenom }}
                 </a>
                 <form action="{{ path('delete_stagiaire', {'id': stagiaire.id}) }}" method="post" onsubmit="return confirm('Etes-vous sûre de vouloir supprimer ce stagiaire ?');">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stagiaire.id) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_stagiaire') }}">
                     <button style="background-color: #346E74;" type="submit" class="text-white font-bold py-2 px-4 rounded"> Supprimer </button>
                 </form>
             </li>

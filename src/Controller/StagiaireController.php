@@ -10,6 +10,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -26,14 +27,26 @@ class StagiaireController extends AbstractController
 
     #[Route('/stagiaire/supprimer/{id}', name: 'delete_stagiaire', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(Stagiaire $stagiaire, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request,Stagiaire $stagiaire, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager,int $id): Response
     {
-        $entityManager->remove($stagiaire);
-        $entityManager->flush();
 
-        $this->addFlash('success', 'Stagiaire supprimé avec succès !');
+        if (!$stagiaire) {
+            throw $this->createNotFoundException('No stagiaire found for id ' . $id);
+        }
+
+        // Vérifier le token CSRF
+        if ($this->isCsrfTokenValid('delete_stagiaire', $request->request->get('_token'))) {
+            // Si valide, on peut supprimer le stagiaire
+            $entityManager->remove($stagiaire);
+            $entityManager->flush();
+
+            // Redirection après suppression
+            return $this->redirectToRoute('app_stagiaire');
+        }
         
-        return $this->redirectToRoute('app_stagiaire');
+        // Si le token est invalide, lever une exception
+        throw $this->createAccessDeniedException('Token CSRF invalide.');
+
     }
 
     
