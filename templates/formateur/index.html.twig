@@ -1,20 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello FormateurController!{% endblock %}
+{% block title %}Liste des Modules{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="content mt-12">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/laragon/www/SfsessionAsma/src/Controller/FormateurController.php</code></li>
-        <li>Your template at <code>C:/laragon/www/SfsessionAsma/templates/formateur/index.html.twig</code></li>
-    </ul>
+    <div id="ficheStagiaire" class="flex items-center mb-6">
+        <img id="icons" src="{{ asset('img/teacher.png') }}" alt="formateurs" class="h-8 w-8"> 
+        <h1 class="text-2xl font-bold ml-4"> Liste des Formateurs </h1>
+    </div>
+
+    {% for formateur in formateurs %}
+        <ul class="divide-y divide-gray-200 border rounded-lg">   
+            <li style="display: flex;
+            flex-direction: row;
+            align-content: space-between;
+            justify-content: space-between;
+            align-items: center;" class="px-4 py-2 hover:bg-gray-100"> 
+                <a href="{{ path('show_formateur', {'id': formateur.id }) }}" class="text-blue-600 hover:underline">
+                    {{ formateur.nom }}
+                </a>
+                <form action="{{ path('delete_formateur', {'id': formateur.id}) }}" method="post" onsubmit="return confirm('Etes-vous sûre ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_formateur') }}">
+                    <button type="submit" class="text-white font-bold py-2 px-4 rounded" style="background-color: #346E74;">
+                        Supprimer
+                    </button>
+                </form>
+            </li>
+        </ul><br>
+    {% else %}
+        <ul>
+            <li class="px-4 py-2 text-gray-500"> Aucun formateur disponible pour le moment. </li>
+        </ul>
+    {% endfor %}
+    <br>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('add_formateur') }}" class="text-white font-bold py-2 px-4 rounded" style="background-color: #346E74;">
+            Ajouter un module
+        </a>
+    {% endif %}
+    
 </div>
+
 {% endblock %}
