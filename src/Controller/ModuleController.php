@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ModuleController extends AbstractController
@@ -57,13 +58,26 @@ class ModuleController extends AbstractController
     
     #[Route('/module/supprimer/{id}', name: 'delete_module', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(Module $module, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Module $module, EntityManagerInterface $entityManager,CsrfTokenManagerInterface $csrfTokenManager,int $id): Response
     {
-        $entityManager->remove($module);
-        $entityManager->flush();
+
+        if (!$module) {
+            throw $this->createNotFoundException('No module found for id ' . $id);
+        }
+        // Vérifier le token CSRF
+        if ($this->isCsrfTokenValid('delete_module', $request->request->get('_token'))) {
+            
+            $entityManager->remove($module);
+            $entityManager->flush();
     
-        return $this->redirectToRoute('app_module');
+            return $this->redirectToRoute('app_module');
+
+        }
+        
+        // Si le token est invalide, lever une exception
+        throw $this->createAccessDeniedException('Token CSRF invalide.');
     }
+
     
     #[Route('/module/{id}', name: 'show_module')]
     public function show(Module $module): Response
