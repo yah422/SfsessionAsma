@@ -19,7 +19,7 @@
             justify-content: space-between;
             align-items: center;" class="px-4 py-2 hover:bg-gray-100"> 
                 <a href="{{ path('show_formateur', {'id': formateur.id }) }}" class="text-blue-600 hover:underline">
-                    {{ formateur.nom }}
+                    {{ formateur.nom }} {{ formateur.prenom }}
                 </a>
                 <form action="{{ path('delete_formateur', {'id': formateur.id}) }}" method="post" onsubmit="return confirm('Etes-vous sûre ?');">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete_formateur') }}">
