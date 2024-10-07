@@ -21,9 +21,13 @@ class Programme
     #[ORM\ManyToOne(inversedBy: 'programmes')]
     private ?Session $session = null;
 
-    #[ORM\ManyToOne(inversedBy: 'programmes')]
-    private ?Module $module = null;
-
+    #[ORM\ManyToOne(targetEntity : Module::class, inversedBy: 'programmes')]
+    // private ?Module $module = null;
+  /**
+     * @ORM\ManyToOne(targetEntity=Module::class, inversedBy="programmes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $module;
 
     public function __construct()
     {

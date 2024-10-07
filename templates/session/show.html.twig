@@ -31,7 +31,10 @@
                         <strong>Intitulé : </strong> {{ programme.module.nom }} 
                     </a>
                     <br>
-                    <strong>Durée de la session :</strong> {{ programme.duree }} jours<br>
+                    <strong>Durée de la session :</strong> {{ programme.duree }} jours
+                    {% if app.user %}
+                        <p class="delete"><a href="{{ path('app_removeProgramme', {'id': session.id, 'programmeId' : programme.id}) }}"> <img src="{{asset('img/trash.png')}}" alt=""> </a></p>
+                    {% endif %}
                 </li>
             {% else %}
                 <li>Aucun module programmé.</li>
@@ -41,7 +44,11 @@
         <h2 class="text-xl font-semibold mt-4">Modules non programmés :</h2>
         <ul>
             {% for module in nonProgrammes %}
-                <li>{{ module.nom }}</li>
+                <li>{{ module.nom }}
+                    {% if app.user %}
+                        <p class="add"><a href="{{ path('app_addProgramme', {'id': session.id, 'programmeId' : module.id}) }}"> <img src="{{ asset('img/add.png') }}" alt=""> </a></p>
+                    {% endif %}
+                </li>
             {% else %}
                 <li>Aucun module disponible</li>
             {% endfor %}
@@ -60,6 +67,9 @@
                     <a href="{{ path('show_stagiaire', {'id': stagiaire.id }) }}">
                         {{ stagiaire.nom }} {{ stagiaire.prenom }}
                     </a>
+                    {% if app.user %}
+                        <p class="delete"><a href="{{ path('app_removeStagiaire', {'id': session.id, 'stagiaireId' : stagiaire.id}) }}"> <img src="{{asset('img/trash.png')}}" alt=""> </a></p>
+                    {% endif %}
                 </li>
             {% else %}
                 <li>Aucun stagiaire inscrit.</li>
@@ -73,9 +83,11 @@
                 <li>Aucun stagiaire non inscrit trouvé.</li>
             {% else %}
                 {% for stagiaire in nonInscrits %}
-                    <li>{{ stagiaire.nom }}</li>
-                {% else %}
-                    <li>Aucun stagiaire disponible</li>
+                    <li>{{ stagiaire.nom }} {{ stagiaire.prenom }} 
+                        {% if app.user %}
+                            <p class="add"><a href="{{ path('app_addStagiaire', {'id': session.id, 'stagiaireId' : stagiaire.id}) }}"> <img src="{{ asset('img/add.png') }}" alt=""> </a></p>
+                        {% endif %}
+                    </li>
                 {% endfor %}
             {% endif %}
         </ul>

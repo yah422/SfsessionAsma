@@ -77,10 +77,10 @@ class Module
         return $this->programmes;
     }
 
-    public function addProgramme(Programme $programme): static
+    public function addProgramme(Programme $programme): self
     {
         if (!$this->programmes->contains($programme)) {
-            $this->programmes->add($programme);
+            $this->programmes[] = $programme;
             $programme->setModule($this);
         }
 

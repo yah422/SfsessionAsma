@@ -7,6 +7,8 @@ use App\Entity\Categorie;
 use App\Form\SessionType;
 use App\Repository\ModuleRepository;
 use App\Repository\SessionRepository;
+use App\Repository\ProgrammeRepository;
+use App\Repository\StagiaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -100,6 +102,133 @@ class SessionController extends AbstractController
         throw $this->createAccessDeniedException('Token CSRF invalide.');
         
     }
+
+    #[Route('/session/{id}/removeProgramme/{programmeId}', name: 'app_removeProgramme')]
+    public function removeProgramme(int $id, int $programmeId, SessionRepository $sessionRepository, ProgrammeRepository $programmeRepository, EntityManagerInterface $entityManager): Response
+    {
+        // Recherche de la session par ID
+        $session = $sessionRepository->find($id);
+    
+        // Vérification si la session existe
+        if (!$session) {
+            throw $this->createNotFoundException('Session non trouvée.');
+        }
+    
+        // Recherche du programme par ID
+        $programme = $programmeRepository->find($programmeId);
+    
+        // Vérification si le programme existe et est bien lié à la session
+        if (!$programme || !$session->getProgrammes()->contains($programme)) {
+            throw $this->createNotFoundException('Programme non trouvé ou non associé à cette session.');
+        }
+    
+        // Suppression du programme
+        $session->removeProgramme($programme); 
+        $entityManager->remove($programme);
+        $entityManager->flush();
+    
+        // Redirection vers la page de la session
+        return $this->redirectToRoute("app_session", ['id' => $id]);
+    }
+
+    #[Route('/session/{id}/addProgramme/{programmeId}', name: 'app_addProgramme')]
+    public function addProgramme(int $id, int $programmeId, SessionRepository $sessionRepository, ProgrammeRepository $programmeRepository, EntityManagerInterface $entityManager): Response
+    {
+        // Recherche de la session par son ID
+        $session = $sessionRepository->find($id);
+        
+        // Vérification si la session existe
+        if (!$session) {
+            throw $this->createNotFoundException('Session non trouvée.');
+        }
+    
+        // Recherche du programme par son ID
+        $programme = $programmeRepository->find($programmeId);
+        
+        // Vérification si le programme existe
+        if (!$programme) {
+            throw $this->createNotFoundException('Programme non trouvé.');
+        }
+    
+        // Lier le programme à la session
+        $programme->setSession($session);
+    
+        // Persister l'objet dans la base de données
+        $entityManager->persist($programme);
+        $entityManager->flush();
+    
+        // Rediriger vers la fiche de la session
+        return $this->redirectToRoute('show_session', ['id' => $id]);
+    }
+    
+    
+    #[Route('/session/{id}/removeStagiaire/{stagiaireId}', name: 'app_removeStagiaire')]
+    public function removeStagiaire(int $id, int $stagiaireId, SessionRepository $sessionRepository, StagiaireRepository $stagiaireRepository, EntityManagerInterface $entityManager): Response
+    {
+        // Recherche de la session par ID
+        $session = $sessionRepository->find($id);
+        
+        // Vérification si la session existe
+        if (!$session) {
+            throw $this->createNotFoundException('Session non trouvée.');
+        }
+    
+        // Recherche du stagiaire par ID
+        $stagiaire = $stagiaireRepository->find($stagiaireId);
+    
+        // Vérification si le stagiaire existe et est bien inscrit à la session
+        if (!$stagiaire || !$session->getStagiaires()->contains($stagiaire)) {
+            throw $this->createNotFoundException('Stagiaire non trouvé ou non inscrit à cette session.');
+        }
+    
+        // Suppression du stagiaire de la session
+        $session->removeStagiaire($stagiaire);
+    
+        // Enregistrement des modifications
+        $entityManager->persist($session);
+        $entityManager->flush();
+    
+        // Redirection vers la page de la session
+        return $this->redirectToRoute("show_session", ['id' => $id]);
+    }
+    
+    #[Route('/session/{id}/addStagiaire/{stagiaireId}', name: 'app_addStagiaire')]
+public function addStagiaire(int $id, int $stagiaireId, SessionRepository $sessionRepository, StagiaireRepository $stagiaireRepository, EntityManagerInterface $entityManager): Response
+{
+    // Recherche de la session par ID
+    $session = $sessionRepository->find($id);
+    
+    // Vérification si la session existe
+    if (!$session) {
+        throw $this->createNotFoundException('Session non trouvée.');
+    }
+
+    // Recherche du stagiaire par ID
+    $stagiaire = $stagiaireRepository->find($stagiaireId);
+
+    // Vérification si le stagiaire existe
+    if (!$stagiaire) {
+        throw $this->createNotFoundException('Stagiaire non trouvé.');
+    }
+
+    // Vérifie si le stagiaire n'est pas déjà inscrit à la session
+    if ($session->getStagiaires()->contains($stagiaire)) {
+        $this->addFlash('warning', 'Ce stagiaire est déjà inscrit à la session.');
+    } else {
+        // Ajout du stagiaire à la session
+        $session->addStagiaire($stagiaire);
+        
+        // Persistance et enregistrement des modifications
+        $entityManager->persist($session);
+        $entityManager->flush();
+        
+        $this->addFlash('success', 'Stagiaire ajouté avec succès à la session.');
+    }
+
+    // Redirection vers la fiche de la session
+    return $this->redirectToRoute('show_session', ['id' => $id]);
+}
+
 
     #[Route('/session/{id}', name: 'show_session')]
     public function show(Session $session, SessionRepository $sr): Response
