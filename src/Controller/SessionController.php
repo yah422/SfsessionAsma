@@ -128,7 +128,7 @@ class SessionController extends AbstractController
         $entityManager->flush();
     
         // Redirection vers la page de la session
-        return $this->redirectToRoute("app_session", ['id' => $id]);
+        return $this->redirectToRoute("show_session", ['id' => $id]);
     }
 
     #[Route('/session/{id}/addProgramme/{programmeId}', name: 'app_addProgramme')]
