@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Session;
 use App\Entity\Categorie;
+use App\Entity\Programme;
 use App\Form\SessionType;
+use App\Form\ProgrammeType;
 use App\Repository\ModuleRepository;
 use App\Repository\SessionRepository;
 use Symfony\Component\Form\FormError;
@@ -32,46 +34,52 @@ class SessionController extends AbstractController
     }
 
     #[Route('/session/add', name: 'app_add')]
-public function add(Request $request, EntityManagerInterface $entityManager, Security $security): Response
-{
-    // Vérification du rôle 'ROLE_ADMIN'
-    if (!$security->isGranted('ROLE_ADMIN')) {
-        // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
-        return $this->render('session/errorPage.html.twig');     
-    }
-
-    $session = new Session();
-    $form = $this->createForm(SessionType::class, $session);
+    public function add(Request $request, EntityManagerInterface $entityManager, Security $security): Response
+    {
+        // Vérification du rôle 'ROLE_ADMIN'
+        if (!$security->isGranted('ROLE_ADMIN')) {
+            // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
+            return $this->render('session/errorPage.html.twig');     
+        }
     
-    $form->handleRequest($request);
-    
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Récupérer les dates depuis l'objet de session
-        $dateDebut = $session->getDateDebut();
-        $dateFin = $session->getDateFin();
+        $session = new Session();
+        $form = $this->createForm(SessionType::class, $session);
         
-        // Vérifier que la date de début est antérieure à la date de fin
-        if ($dateDebut > $dateFin) {
-            // Ajouter un message d'erreur
-            $form->addError(new FormError('La date de début doit être antérieure à la date de fin.'));
-        } else {
-            // Vérifier que le nombre de places est un nombre valide
-            if (!is_numeric($session->getNbrePlace())) {
-                $form->addError(new FormError('Le nombre de places doit être un nombre valide.'));
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Récupérer les dates depuis l'objet de session
+            $dateDebut = $session->getDateDebut();
+            $dateFin = $session->getDateFin();
+            
+            // Vérifier que la date de début est antérieure à la date de fin
+            if ($dateDebut > $dateFin) {
+                // Ajouter un message d'erreur
+                $form->addError(new FormError('La date de début doit être antérieure à la date de fin.'));
             } else {
-                // Persister la session si toutes les validations passent
-                $entityManager->persist($session);
-                $entityManager->flush();
+                // Vérifier que le nombre de places est un nombre valide
+                if (!is_numeric($session->getNbrePlace()) || $session->getNbrePlace() < 0) {
+                    $form->addError(new FormError('Le nombre de places doit être un nombre valide et positif.'));
+                } else {
+                    // Persister la session si toutes les validations passent
+                    $entityManager->persist($session);
+                    $entityManager->flush();
     
-                return $this->redirectToRoute('app_session');
+                    return $this->redirectToRoute('app_session');
+                }
             }
         }
+        
+        // Rendre la vue avec le formulaire
+        return $this->render('session/show.html.twig', [
+            'session' => $session,
+            'form' => $form->createView(),
+            'nonProgrammes' => [],  // Assurez-vous de définir cette variable
+            'nonInscrits' => [],     // Assurez-vous de définir cette variable
+        ]);
     }
     
-    return $this->render('session/add.html.twig', [
-        'form' => $form->createView(),
-    ]);
-}
+    
 
     
     #[Route("/session/{id}/edit", name:"session_edit")]
@@ -149,35 +157,6 @@ public function add(Request $request, EntityManagerInterface $entityManager, Sec
         return $this->redirectToRoute("show_session", ['id' => $id]);
     }
 
-    #[Route('/session/{id}/addProgramme/{programmeId}', name: 'app_addProgramme')]
-    public function addProgramme(int $id, int $programmeId, SessionRepository $sessionRepository, ProgrammeRepository $programmeRepository, EntityManagerInterface $entityManager): Response
-    {
-        // Recherche de la session par son ID
-        $session = $sessionRepository->find($id);
-        
-        // Vérification si la session existe
-        if (!$session) {
-            throw $this->createNotFoundException('Session non trouvée.');
-        }
-    
-        // Recherche du programme par son ID
-        $programme = $programmeRepository->find($programmeId);
-        
-        // Vérification si le programme existe
-        if (!$programme) {
-            throw $this->createNotFoundException('Programme non trouvé.');
-        }
-    
-        // Lier le programme à la session
-        $programme->setSession($session);
-    
-        // Persister l'objet dans la base de données
-        $entityManager->persist($programme);
-        $entityManager->flush();
-    
-        // Rediriger vers la fiche de la session
-        return $this->redirectToRoute('show_session', ['id' => $id]);
-    }
     
     
     #[Route('/session/{id}/removeStagiaire/{stagiaireId}', name: 'app_removeStagiaire')]
@@ -249,21 +228,45 @@ public function addStagiaire(int $id, int $stagiaireId, SessionRepository $sessi
 
 
     #[Route('/session/{id}', name: 'show_session')]
-    public function show(Session $session, SessionRepository $sr): Response
+    public function show(Session $session, SessionRepository $sr, Request $request, EntityManagerInterface $entityManager): Response
     {
         // Récupérer les stagiaires non inscrits dans la session
         $nonInscrits = $sr->findNonInscrits($session->getId());
-    
+        
         // Récupérer les modules non programmés dans la session
         $nonProgrammes = $sr->findNonProgrammes($session->getId());
-    
+        
+        // Créer un nouveau programme (ou le formulaire approprié)
+        $programme = new Programme();
+        $form = $this->createForm(ProgrammeType::class, $programme);
+        
+        // Gestion du formulaire
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            // Associer le programme à la session
+            $programme->setSession($session);
+            $entityManager->persist($programme);
+            $entityManager->flush();
+            $programme->setModule($data-> getModule());
+            $programme->setDuree($data-> getDuree());
+            $programme->setSession($session);
+            
+            // Rediriger après l'ajout du programme
+            return $this->redirectToRoute('show_session', ['id' => $session->getId()]);
+        }
+
         // Renvoyer les résultats à la vue
         return $this->render('session/show.html.twig', [
             'session' => $session,
             'nonInscrits' => $nonInscrits,
             'nonProgrammes' => $nonProgrammes,
+            'form' => $form->createView(), // Utiliser form
         ]);
     }
+
     
     
 }

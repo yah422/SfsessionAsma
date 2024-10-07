@@ -1,66 +1,100 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail session{% endblock %}
+{% block title %}Détails de la session{% endblock %}
 
 {% block body %}
 <div class="content mt-12">
 
-    <div id="ficheStagiaire" class="mb-6">
-        <h1 class="text-2xl font-bold">Détails de la session {{ session.nom }}</h1><br>
+    <div id="ficheStagiaire" class="flex items-center mb-6">        
+        <h1 class="text-2xl font-bold">Détails de la session : {{ session.nom }}</h1><br>
     </div>
     
-    <div id="DetailsStagiaire" class="bg-white p-6 rounded-lg shadow-md">
+    <div class="bg-white p-6 rounded-lg shadow-md">
         <p class="text-gray-700">
-            <strong class="font-semibold">Intitulé:</strong> {{ session.nom }} <br>
-            <strong class="font-semibold">Date de début:</strong> {{ session.dateDebut|date('d/m/Y') }} <br>
-            <strong class="font-semibold">Date de fin:</strong> {{ session.dateFin|date('d/m/Y') }} <br>
-            <strong class="font-semibold">Nombre de places:</strong> {{ session.nbrePlace }} <br>
+            <strong class="font-semibold">Intitulé :</strong> {{ session.nom }} <br>
+            <strong class="font-semibold">Date de début :</strong> {{ session.dateDebut|date('d/m/Y') }} <br>
+            <strong class="font-semibold">Date de fin :</strong> {{ session.dateFin|date('d/m/Y') }} <br>
+            <strong class="font-semibold">Nombre de places :</strong> {{ session.nbrePlace }} <br>
         </p>
     </div>
     <br>
 
-    <div id="ficheStagiaire" class="mb-6">
-        <h1 class="text-2xl font-bold">Modules programmés</h1><br>
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold">Modules programmés</h2><br>
     </div>
     
-    <div id="DetailsStagiaire" class="bg-white p-6 rounded-lg shadow-md">
+    <div class="bg-white p-6 rounded-lg shadow-md">
         <ul class="text-gray-700">
             {% for programme in session.programmes %}
                 <li>
                     <a href="{{ path('show_module', {'id': programme.module.id }) }}">
-                        <strong>Intitulé : </strong> {{ programme.module.nom }} 
+                        <strong>Intitulé :</strong> {{ programme.module.nom }} 
                     </a>
                     <br>
                     <strong>Durée de la session :</strong> {{ programme.duree }} jours
                     {% if app.user %}
-                        <p class="delete"><a href="{{ path('app_removeProgramme', {'id': session.id, 'programmeId' : programme.id}) }}"> <img src="{{asset('img/minus.png')}}" alt=""> </a></p>
+                        <p class="delete">
+                            <a href="{{ path('app_removeProgramme', {'id': session.id, 'programmeId': programme.id}) }}">
+                                <img src="{{ asset('img/minus.png') }}" alt="Supprimer">
+                            </a>
+                        </p>
                     {% endif %}
                 </li>
             {% else %}
                 <li>Aucun module programmé.</li>
             {% endfor %}
         </ul>
-
-        <h2 class="text-xl font-semibold mt-4">Modules non programmés :</h2>
+        <div id="ficheStagiaire" class="flex items-center mb-6">        
+            <h3 class="text-xl font-semibold mt-4">Modules non programmés :</h3>
+        </div>
         <ul>
             {% for module in nonProgrammes %}
-                <li>{{ module.nom }}
-                    {% if app.user %}
-                        <p class="add"><a href="{{ path('app_addProgramme', {'id': session.id, 'programmeId' : module.id}) }}"> <img src="{{ asset('img/add.png') }}" alt=""> </a></p>
-                    {% endif %}
+                <li>
+                    {{ module.nom }}
                 </li>
             {% else %}
                 <li>Aucun module disponible</li>
             {% endfor %}
         </ul>
+        {% if app.user %}
+            <div class="addProgrammeSession">
+                {{ form_errors(form) }}
+
+                {{ form_start(form) }}
+                    <div class="addProgramme">
+                        <div class="form-group">
+                            <label for="{{ form.duree.vars.id }}">Durée:</label>
+                            {{ form_widget(form.duree, {'attr': {'class': 'input-field'}}) }}
+                            {{ form_errors(form.duree) }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.session.vars.id }}">Intitulé session:</label>
+                            {{ form_widget(form.session, {'attr': {'class': 'input-field'}}) }}
+                            {{ form_errors(form.session) }}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.module.vars.id }}">Module:</label>
+                            {{ form_widget(form.module, {'attr': {'class': 'input-field'}}) }}
+                            {{ form_errors(form.module) }}
+                        </div>
+                    </div>
+
+                    <div class="form_submit">
+                        <button type="submit" class="btn">Ajouter</button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        {% endif %}
+
     </div>
     <br>
-
-    <div id="ficheStagiaire" class="mb-6">
-        <h3 class="text-2xl font-bold">Stagiaires participant</h3><br>
+    <div id="ficheStagiaire" class="flex items-center mb-6">        
+        <h4 class="text-2xl font-bold">Stagiaires participants</h4><br>
     </div>
 
-    <div id="DetailsStagiaire" class="bg-white p-6 rounded-lg shadow-md">
+    <div class="bg-white p-6 rounded-lg shadow-md">
         <ul class="text-gray-700">
             {% for stagiaire in session.stagiaires %}
                 <li>
@@ -68,7 +102,11 @@
                         {{ stagiaire.nom }} {{ stagiaire.prenom }}
                     </a>
                     {% if app.user %}
-                        <p class="delete"><a href="{{ path('app_removeStagiaire', {'id': session.id, 'stagiaireId' : stagiaire.id}) }}"> <img src="{{asset('img/minus.png')}}" alt=""> </a></p>
+                        <p class="delete">
+                            <a href="{{ path('app_removeStagiaire', {'id': session.id, 'stagiaireId': stagiaire.id}) }}">
+                                <img src="{{ asset('img/minus.png') }}" alt="Supprimer">
+                            </a>
+                        </p>
                     {% endif %}
                 </li>
             {% else %}
@@ -76,8 +114,9 @@
             {% endfor %}
         </ul>
         <br>
-
-        <h2 class="text-xl font-semibold mt-4">Stagiaires non inscrits :</h2>
+        <div id="ficheStagiaire" class="flex items-center mb-6">        
+            <h3 class="text-xl font-semibold mt-4">Stagiaires non inscrits :</h3>
+        </div>
         <ul>
             {% if nonInscrits is empty %}
                 <li>Aucun stagiaire non inscrit trouvé.</li>
@@ -85,7 +124,11 @@
                 {% for stagiaire in nonInscrits %}
                     <li>{{ stagiaire.nom }} {{ stagiaire.prenom }} 
                         {% if app.user %}
-                            <p class="add"><a href="{{ path('app_addStagiaire', {'id': session.id, 'stagiaireId' : stagiaire.id}) }}"> <img src="{{ asset('img/add.png') }}" alt=""> </a></p>
+                            <p class="add">
+                                <a href="{{ path('app_addStagiaire', {'id': session.id, 'stagiaireId': stagiaire.id}) }}">
+                                    <img src="{{ asset('img/add.png') }}" alt="Ajouter">
+                                </a>
+                            </p>
                         {% endif %}
                     </li>
                 {% endfor %}
@@ -94,6 +137,7 @@
         <br>
     </div>
     <br>
+
     {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ path('session_edit', {'id': session.id}) }}" class="text-white font-bold py-2 px-4 rounded" style="background-color: #346E74;">
             Modifier
