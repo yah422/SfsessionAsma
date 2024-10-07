@@ -28,33 +28,32 @@ class CategorieController extends AbstractController
 
     // Méthode pour ajouter une catégorie
     #[Route('/categorie/ajouter', name: 'add_categorie')]
-       public function add(Categorie $categorie, Security $security,Request $request, EntityManagerInterface $entityManager): Response
+    #[IsGranted('ROLE_ADMIN')]
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Création d'une nouvelle instance de Categorie
+        $categorie = new Categorie();
 
-        // Vérification du rôle 'ROLE_ADMIN'
-        if (!$security->isGranted('ROLE_ADMIN')) {
-            // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
-            return $this->render('session/errorPage.html.twig');     
-        }
+        // Création du formulaire
+        $form = $this->createForm(CategorieType::class, $categorie);
 
-        if(!$categorie){
-            $categorie = new Categorie();
-        }
-
-        $form = $this->createForm(CategorieType::class,$categorie);
-
+        // Gestion de la soumission du formulaire
         $form->handleRequest($request);
+
+        // Vérification si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $categorie = $form->getData();
-
+            // Sauvegarde de la catégorie en base de données
             $entityManager->persist($categorie);
-
             $entityManager->flush();
 
+            // Message de confirmation
+            $this->addFlash('success', 'Catégorie ajoutée avec succès !');
+
+            // Redirection vers la page de liste des catégories (à ajuster si nécessaire)
             return $this->redirectToRoute('app_categorie');
         }
 
+        // Rendu de la vue avec le formulaire
         return $this->render('categorie/add.html.twig', [
             'form' => $form->createView(),
         ]);
