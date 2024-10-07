@@ -54,6 +54,23 @@ class SessionController extends AbstractController
         ]);
     }
     
+    #[Route("/session/{id}/edit", name:"session_edit")]
+    public function edit(Request $request, Session $session, EntityManagerInterface $entityManager, int $id): Response
+    {
+        $form = $this->createForm(SessionType::class, $session);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('app_session', [], Response::HTTP_SEE_OTHER);
+        }
+    
+        return $this->render('session/edit.html.twig', [
+            'session' => $session,
+            'form' => $form->createView(),
+        ]);
+    }
     
     #[Route('/session/supprimer/{id}', name: 'delete_session', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]

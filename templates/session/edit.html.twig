@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer Session{% endblock %}
+
+{% block body %}
+    <div  class="content mt-12">
+
+        <div id="ficheStagiaire">
+            <h1 class="text-2xl font-bold mb-4">Modifier Session: {{ session.nom }} </h1>
+        </div>
+        
+        {{ form_start(form) }}
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                {{ form_row(form.nom, {'label': 'Intitulé: '}) }}
+                {{ form_row(form.dateDebut, {'label': 'Date de Début: '}) }}
+                {{ form_row(form.dateFin, {'label': 'Date de Fin: '}) }}
+                {{ form_row(form.nbrePlace, {'label': 'Nombre de Place: '}) }}
+                {{ form_row(form.formateur, {'label': 'Formateur: '}) }}
+                {{ form_row(form.categorie, {'label': 'Catégorie: '}) }}
+                
+                <button style="background-color: #346E74;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;" class="btn mt-4" type="submit">Enregistrer les modifications</button>
+            </div>
+        {{ form_end(form) }}
+
+    </div>
+    <br>
+    <a href="{{ path('app_session') }}" style="
+    color: #346E74;
+    padding: 10px;
+    margin-left:40px;" class=" mt-6 block">Retour à la liste des sessions</a>
+
+{% endblock %}
