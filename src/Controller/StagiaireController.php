@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Stagiaire;
 use App\Form\StagiaireType;
+use Symfony\Component\Form\FormError;
 use App\Repository\StagiaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -50,33 +51,43 @@ class StagiaireController extends AbstractController
     }
 
     
-    #[Route('/stagiaire/ajouter', name: 'add_stagiaire')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function add(Request $request, EntityManagerInterface $entityManager, Security $security): Response
+    #[Route('/stagiaire/add', name: 'add_stagiaire')]
+    public function addStagiaire(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         // Vérification du rôle 'ROLE_ADMIN'
         if (!$security->isGranted('ROLE_ADMIN')) {
-        // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
-        return $this->render('stagiaire/errorPage.html.twig');     
+            // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
+            return $this->render('stagiaire/errorPage.html.twig');     
         }
-        
+    
         $stagiaire = new Stagiaire();
         $form = $this->createForm(StagiaireType::class, $stagiaire);
-
+        
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($stagiaire);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Stagiaire ajouté avec succès !');
-            return $this->redirectToRoute('app_stagiaire');
+            // Récupérer la date de naissance depuis l'objet stagiaire
+            $dateNaissance = $stagiaire->getDateNaissance();
+            $currentDate = new \DateTime();
+            
+            // Vérifier que la date de naissance n'est pas dans le futur
+            if ($dateNaissance > $currentDate) {
+                // Ajouter un message d'erreur
+                $form->addError(new FormError('La date de naissance ne peut pas être dans le futur.'));
+            } else {
+                // Persister le stagiaire si toutes les validations passent
+                $entityManager->persist($stagiaire);
+                $entityManager->flush();
+        
+                return $this->redirectToRoute('app_stagiaire');
+            }
         }
-
+        
         return $this->render('stagiaire/add.html.twig', [
             'form' => $form->createView(),
         ]);
-    }  
+    }
+    
     
 
     #[Route("/stagiaire/{id}/edit", name:"stagiaire_edit")]
