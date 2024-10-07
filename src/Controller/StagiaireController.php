@@ -78,6 +78,24 @@ class StagiaireController extends AbstractController
         ]);
     }  
     
+
+#[Route("/stagiaire/{id}/edit", name:"stagiaire_edit")]
+public function edit(Request $request, Stagiaire $stagiaire, EntityManagerInterface $entityManager, int $id): Response
+{
+    $form = $this->createForm(StagiaireType::class, $stagiaire);
+    $form->handleRequest($request);
+ 
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->flush();
+ 
+        return $this->redirectToRoute('app_stagiaire', [], Response::HTTP_SEE_OTHER);
+    }
+ 
+    return $this->render('stagiaire/edit.html.twig', [
+        'stagiaire' => $stagiaire,
+        'form' => $form->createView(),
+    ]);
+}
     #[Route('/stagiaire/{id}', name: 'show_stagiaire')]
     public function show(Stagiaire $stagiaire,StagiaireRepository $stagiaireRepository): Response
     {
