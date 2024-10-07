@@ -33,7 +33,7 @@
                     <br>
                     <strong>Durée de la session :</strong> {{ programme.duree }} jours
                     {% if app.user %}
-                        <p class="delete"><a href="{{ path('app_removeProgramme', {'id': session.id, 'programmeId' : programme.id}) }}"> <img src="{{asset('img/trash.png')}}" alt=""> </a></p>
+                        <p class="delete"><a href="{{ path('app_removeProgramme', {'id': session.id, 'programmeId' : programme.id}) }}"> <img src="{{asset('img/minus.png')}}" alt=""> </a></p>
                     {% endif %}
                 </li>
             {% else %}
@@ -68,7 +68,7 @@
                         {{ stagiaire.nom }} {{ stagiaire.prenom }}
                     </a>
                     {% if app.user %}
-                        <p class="delete"><a href="{{ path('app_removeStagiaire', {'id': session.id, 'stagiaireId' : stagiaire.id}) }}"> <img src="{{asset('img/trash.png')}}" alt=""> </a></p>
+                        <p class="delete"><a href="{{ path('app_removeStagiaire', {'id': session.id, 'stagiaireId' : stagiaire.id}) }}"> <img src="{{asset('img/minus.png')}}" alt=""> </a></p>
                     {% endif %}
                 </li>
             {% else %}
