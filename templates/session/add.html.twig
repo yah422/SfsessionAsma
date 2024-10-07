@@ -15,6 +15,8 @@
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">Nom de la session</label>
                     {{ form_widget(form.nom, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded'}}) }}
+                    {{ form_errors(form.nom) }}
+
                 </div>
 
                 <div class="mb-4">
@@ -30,16 +32,35 @@
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">Nombre de places</label>
                     {{ form_widget(form.nbrePlace, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded'}}) }}
+                    {{ form_errors(form.nbrePlace) }}
                 </div>
                 
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">Date de début</label>
                     {{ form_widget(form.dateDebut, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded'}}) }}
+                    {{ form_errors(form.dateDebut) }}
+                    {% if form.vars.errors|length > 0 %}
+                    <div class="text-red-500 mb-4">
+                        {% for error in form.vars.errors %}
+                            <p>{{ error.message }}</p>
+                        {% endfor %}
+                    </div>
+                        {% endif %}
+
                 </div>
                 
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2">Date de fin</label>
                     {{ form_widget(form.dateFin, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded'}}) }}
+                    {{ form_errors(form.dateFin) }}
+                    {% if form.vars.errors|length > 0 %}
+                    <div class="text-red-500 mb-4">
+                        {% for error in form.vars.errors %}
+                            <p>{{ error.message }}</p>
+                        {% endfor %}
+                    </div>
+                        {% endif %}
+
                 </div>
 
                 <button type="submit" class="text-white font-bold py-2 px-4 rounded" style="background-color: #346E74;">

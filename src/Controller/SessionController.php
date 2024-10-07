@@ -7,6 +7,7 @@ use App\Entity\Categorie;
 use App\Form\SessionType;
 use App\Repository\ModuleRepository;
 use App\Repository\SessionRepository;
+use Symfony\Component\Form\FormError;
 use App\Repository\ProgrammeRepository;
 use App\Repository\StagiaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,30 +32,47 @@ class SessionController extends AbstractController
     }
 
     #[Route('/session/add', name: 'app_add')]
-    public function add(Request $request, EntityManagerInterface $entityManager, Security $security): Response
-    {
-        // Vérification du rôle 'ROLE_ADMIN'
-        if (!$security->isGranted('ROLE_ADMIN')) {
-            // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
-            return $this->render('session/errorPage.html.twig');     
-        }
-    
-        $session = new Session();
-        $form = $this->createForm(SessionType::class, $session);
-    
-        $form->handleRequest($request);
-    
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($session);
-            $entityManager->flush();
-    
-            return $this->redirectToRoute('app_session');
-        }
-    
-        return $this->render('session/add.html.twig', [
-            'form' => $form->createView(),
-        ]);
+public function add(Request $request, EntityManagerInterface $entityManager, Security $security): Response
+{
+    // Vérification du rôle 'ROLE_ADMIN'
+    if (!$security->isGranted('ROLE_ADMIN')) {
+        // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
+        return $this->render('session/errorPage.html.twig');     
     }
+
+    $session = new Session();
+    $form = $this->createForm(SessionType::class, $session);
+    
+    $form->handleRequest($request);
+    
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Récupérer les dates depuis l'objet de session
+        $dateDebut = $session->getDateDebut();
+        $dateFin = $session->getDateFin();
+        
+        // Vérifier que la date de début est antérieure à la date de fin
+        if ($dateDebut > $dateFin) {
+            // Ajouter un message d'erreur
+            $form->addError(new FormError('La date de début doit être antérieure à la date de fin.'));
+        } else {
+            // Vérifier que le nombre de places est un nombre valide
+            if (!is_numeric($session->getNbrePlace())) {
+                $form->addError(new FormError('Le nombre de places doit être un nombre valide.'));
+            } else {
+                // Persister la session si toutes les validations passent
+                $entityManager->persist($session);
+                $entityManager->flush();
+    
+                return $this->redirectToRoute('app_session');
+            }
+        }
+    }
+    
+    return $this->render('session/add.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
     
     #[Route("/session/{id}/edit", name:"session_edit")]
     public function edit(Security $security, Request $request, Session $session, EntityManagerInterface $entityManager, int $id): Response
