@@ -55,6 +55,24 @@ class ModuleController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route("/module/{id}/edit", name:"module_edit")]
+    public function edit(Request $request, Module $module, EntityManagerInterface $entityManager, int $id): Response
+    {
+        $form = $this->createForm(ModuleType::class, $module);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('app_module', [], Response::HTTP_SEE_OTHER);
+        }
+    
+        return $this->render('module/edit.html.twig', [
+            'module' => $module,
+            'form' => $form->createView(),
+        ]);
+    }
     
     #[Route('/module/supprimer/{id}', name: 'delete_module', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
@@ -78,7 +96,7 @@ class ModuleController extends AbstractController
         throw $this->createAccessDeniedException('Token CSRF invalide.');
     }
 
-    
+
     #[Route('/module/{id}', name: 'show_module')]
     public function show(Module $module): Response
     {
