@@ -55,8 +55,14 @@ class SessionController extends AbstractController
     }
     
     #[Route("/session/{id}/edit", name:"session_edit")]
-    public function edit(Request $request, Session $session, EntityManagerInterface $entityManager, int $id): Response
+    public function edit(Security $security, Request $request, Session $session, EntityManagerInterface $entityManager, int $id): Response
     {
+         // Vérification du rôle 'ROLE_ADMIN'
+         if (!$security->isGranted('ROLE_ADMIN')) {
+            // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
+            return $this->render('stagiaire/errorPage.html.twig');     
+            }
+
         $form = $this->createForm(SessionType::class, $session);
         $form->handleRequest($request);
     

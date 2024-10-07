@@ -80,8 +80,14 @@ class StagiaireController extends AbstractController
     
 
     #[Route("/stagiaire/{id}/edit", name:"stagiaire_edit")]
-    public function edit(Request $request, Stagiaire $stagiaire, EntityManagerInterface $entityManager, int $id): Response
+    public function edit(Request $request, Stagiaire $stagiaire, EntityManagerInterface $entityManager, int $id, Security $security): Response
     {
+         // Vérification du rôle 'ROLE_ADMIN'
+         if (!$security->isGranted('ROLE_ADMIN')) {
+            // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
+            return $this->render('stagiaire/errorPage.html.twig');     
+            }
+
         $form = $this->createForm(StagiaireType::class, $stagiaire);
         $form->handleRequest($request);
     

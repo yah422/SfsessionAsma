@@ -53,8 +53,14 @@ class FormateurController extends AbstractController
     }
 
     #[Route("/formateur/{id}/edit", name:"formateur_edit")]
-    public function edit(Request $request, Formateur $formateur, EntityManagerInterface $entityManager, int $id): Response
+    public function edit(Security $security, Request $request, Formateur $formateur, EntityManagerInterface $entityManager, int $id): Response
     {
+         // Vérification du rôle 'ROLE_ADMIN'
+         if (!$security->isGranted('ROLE_ADMIN')) {
+            // Rediriger vers une page d'erreur si l'utilisateur n'a pas le rôle 'ROLE_ADMIN'
+            return $this->render('stagiaire/errorPage.html.twig');     
+            }
+
         $form = $this->createForm(FormateurType::class, $formateur);
         $form->handleRequest($request);
     
