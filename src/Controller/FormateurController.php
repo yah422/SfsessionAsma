@@ -52,6 +52,24 @@ class FormateurController extends AbstractController
         ]);
     }
 
+    #[Route("/formateur/{id}/edit", name:"formateur_edit")]
+    public function edit(Request $request, Formateur $formateur, EntityManagerInterface $entityManager, int $id): Response
+    {
+        $form = $this->createForm(FormateurType::class, $formateur);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('app_formateur', [], Response::HTTP_SEE_OTHER);
+        }
+    
+        return $this->render('formateur/edit.html.twig', [
+            'formateur' => $formateur,
+            'form' => $form->createView(),
+        ]);
+    }
+
     // Méthode pour supprimer un formateur
     #[Route('/formateur/supprimer/{id}', name: 'delete_formateur', methods: ['DELETE'])]
     public function delete(Formateur $formateur, EntityManagerInterface $entityManager): RedirectResponse

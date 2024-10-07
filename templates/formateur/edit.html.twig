@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer Formateur{% endblock %}
+
+{% block body %}
+    <div  class="content mt-12">
+
+        <div id="ficheStagiaire">
+            <h1 class="text-2xl font-bold mb-4">Modifier Formateur: {{ formateur.nom }} {{ formateur.prenom }}</h1>
+        </div>
+        
+        {{ form_start(form) }}
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                {{ form_row(form.nom, {'label': 'Nom: '}) }}
+                {{ form_row(form.prenom, {'label': 'Prénom: '}) }}
+                {{ form_row(form.email, {'label': 'Email: '}) }}
+                
+                <button style="background-color: #346E74;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;" class="btn mt-4" type="submit">Enregistrer les modifications</button>
+            </div>
+        {{ form_end(form) }}
+
+    </div>
+    <br>
+    <a href="{{ path('app_stagiaire') }}" style="
+    color: #346E74;
+    padding: 10px;
+    margin-left:40px;" class=" mt-6 block">Retour à la liste des formateurs</a>
+
+{% endblock %}
