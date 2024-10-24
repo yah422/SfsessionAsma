@@ -74,8 +74,8 @@ class SessionController extends AbstractController
         return $this->render('session/show.html.twig', [
             'session' => $session,
             'form' => $form->createView(),
-            'nonProgrammes' => [],  // Assurez-vous de définir cette variable
-            'nonInscrits' => [],     // Assurez-vous de définir cette variable
+            'nonProgrammes' => [],
+            'nonInscrits' => [], 
         ]);
     }
     
